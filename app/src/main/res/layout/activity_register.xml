@@ -40,6 +40,7 @@
         app:hintTextColor="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/full_nameET"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textEmailAddress"
@@ -62,6 +63,7 @@
         app:hintTextColor="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailET"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textEmailAddress"
@@ -84,12 +86,14 @@
         app:hintTextColor="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordET"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/signupBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -113,6 +117,7 @@
             android:text="@string/already_have_account" />
 
         <TextView
+            android:id="@+id/signInTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

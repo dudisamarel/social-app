@@ -24,7 +24,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(this.TAG, "Adding user");
-        UsersFirebase.getInstance().add(MainActivity.this,new User("asdadsf@gmail.com", "aa", null, null));
+        try {
+            UsersFirebase.getInstance().register(MainActivity.this,new User("asdadsf@gmail.com", "aa", null, null));
+        } catch (Exception e) {
+            Log.d(TAG, "onCreate: Enter");
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
