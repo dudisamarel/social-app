@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "377755218680",
+    "project_id": "social-app-colman",
+    "storage_bucket": "social-app-colman.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377755218680:android:2a35d90adbb12ab195810d",
+        "android_client_info": {
+          "package_name": "com.colman.social_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377755218680-aavt9g0947to0dek1jdt545std47e0bb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_lqZf3xrVpdIrKlcCISsBK5DW7ozs-Ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377755218680-aavt9g0947to0dek1jdt545std47e0bb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
