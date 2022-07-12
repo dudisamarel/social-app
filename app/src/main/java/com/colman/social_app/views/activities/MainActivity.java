@@ -13,26 +13,28 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 
 import com.colman.social_app.entities.User;
-import com.colman.social_app.services.UsersFirebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private final String TAG = "MainActivity";
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(this.TAG, "Adding user");
-        try {
-            UsersFirebase.getInstance().register(MainActivity.this,new User("asdadsf@gmail.com", "aa", null, null));
-        } catch (Exception e) {
-            Log.d(TAG, "onCreate: Enter");
-            e.printStackTrace();
-        }
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "onCreate: " + user.getEmail());
+        }
     }
 
 }
