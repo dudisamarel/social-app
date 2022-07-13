@@ -1,21 +1,30 @@
 package com.colman.social_app.views.activities;
 
+import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.colman.social_app.R;
+import com.colman.social_app.services.utils.ImageUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity {
@@ -23,6 +32,8 @@ public class Register extends AppCompatActivity {
     EditText email;
     EditText fullName;
     EditText password;
+    Uri imageUri;
+    ImageView profileIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,7 @@ public class Register extends AppCompatActivity {
         email = findViewById(R.id.emailET);
         fullName = findViewById(R.id.full_nameET);
         password = findViewById(R.id.passwordET);
+        profileIV = findViewById(R.id.profileIV);
         Button signUpBtn = findViewById(R.id.signupBtn);
         TextView signInTV = findViewById(R.id.signInTV);
         mAuth = FirebaseAuth.getInstance();
@@ -41,6 +53,38 @@ public class Register extends AppCompatActivity {
             startActivity(new Intent(this, Login.class));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
+        Button selectImageButton = findViewById(R.id.selectImageBtn);
+        selectImageButton.setOnClickListener(v -> {
+            ImageUtils imageUtils = new ImageUtils(this);
+            imageUtils.selectImage();
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST_CODE
+                && resultCode == RESULT_OK
+                && data != null
+                && data.getData() != null) {
+            imageUri = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(getContentResolver(), imageUri);
+
+
+                profileIV.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
+        } else {
+        }
     }
 
     private void createUser() {

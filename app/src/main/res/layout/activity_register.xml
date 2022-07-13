@@ -25,12 +25,44 @@
         android:gravity="center"
         android:text="@string/create_a_new_account" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@mipmap/avatar"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/black"
+            android:id="@+id/profileIV"
+            android:layout_gravity="center"
+            app:strokeWidth="1dp"
+     >
+
+        </com.google.android.material.imageview.ShapeableImageView>
+
+
+        <Button
+            android:id="@+id/selectImageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#3F51B5"
+            android:text="@string/select_image"
+            android:textAllCaps="false" />
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:hint="@string/full_name_placeholder"
         android:maxLines="1"
@@ -46,7 +78,6 @@
             android:inputType="textEmailAddress"
             app:hintTextColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <com.google.android.material.textfield.TextInputLayout
