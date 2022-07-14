@@ -13,40 +13,68 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
 
 import com.colman.social_app.entities.User;
+import com.colman.social_app.fragments.UserProfile;
 import com.colman.social_app.services.utils.ImageUtils;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    private final String TAG = "MainActivity";
-    FirebaseAuth mAuth;
-
-    private Uri imageUri;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-//        mAuth.signOut();
-        FirebaseUser user = mAuth.getCurrentUser();
-        ImageUtils imageUtils = new ImageUtils(this);
-        Intent intent = new Intent(this, Register.class);
-        startActivity(intent);
+//        findViewById(R.id.icon).setOnClickListener(e -> switchToMainFragment());
+//        switchToMainFragment();
+        initNavBar();
+    }
 
-        if (user == null) {
-        } else {
-//            imageUtils.SelectImage();
-            Log.d(TAG, "onCreate: " + user.getEmail());
+
+    public void loadFragment(Fragment fragment, boolean shouldAddToBacKStack, boolean shouldEmptyAllStack) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (shouldEmptyAllStack) {
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
+        transaction.replace(R.id.fragment_container, fragment);
+        if (shouldAddToBacKStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
+
+    protected void initNavBar() {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.profile:
+                    loadFragment(new UserProfile(),false ,true);
+                    return true;
+                case R.id.home:
+                    return true;
+            }
+            return false;
+        });
 
     }
+
+
+
+//
+//    public void switchToMainFragment() {
+//        loadFragment(new MainFragment(), false, true);
+//    }
 
 
 }

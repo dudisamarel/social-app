@@ -1,9 +1,11 @@
 package com.colman.social_app.views.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startActivity(new Intent(this, MainActivity.class));
         setContentView(R.layout.activity_login);
         email = findViewById(R.id.emailET);
         password = findViewById(R.id.passwordET);
@@ -34,6 +37,11 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        return  false;
+    }
+
     private void login() {
         String emailString = email.getText().toString();
         String passwordString = password.getText().toString();
@@ -47,6 +55,7 @@ public class Login extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, MainActivity.class));
                 } else {
                     Toast.makeText(this, "Invalid email address or password", Toast.LENGTH_SHORT).show();
                 }

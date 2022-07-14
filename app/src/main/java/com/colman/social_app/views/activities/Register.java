@@ -2,14 +2,10 @@ package com.colman.social_app.views.activities;
 
 import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,14 +13,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.colman.social_app.R;
 import com.colman.social_app.services.utils.ImageUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity {
@@ -33,10 +33,12 @@ public class Register extends AppCompatActivity {
     EditText fullName;
     EditText password;
     Uri imageUri;
+    ImageUtils imageUtils;
     ImageView profileIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        imageUtils = new ImageUtils(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         email = findViewById(R.id.emailET);
@@ -55,7 +57,6 @@ public class Register extends AppCompatActivity {
         });
         Button selectImageButton = findViewById(R.id.selectImageBtn);
         selectImageButton.setOnClickListener(v -> {
-            ImageUtils imageUtils = new ImageUtils(this);
             imageUtils.selectImage();
         });
     }
@@ -64,26 +65,14 @@ public class Register extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST_CODE
-                && resultCode == RESULT_OK
-                && data != null
-                && data.getData() != null) {
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
-            try {
+            if (imageUri != null) {
+                profileIV.setImageURI(imageUri);
 
-                // Setting image on image view using Bitmap
-                Bitmap bitmap = MediaStore
-                        .Images
-                        .Media
-                        .getBitmap(getContentResolver(), imageUri);
-
-
-                profileIV.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                // Log the exception
-                e.printStackTrace();
+            } else {
+                Toast.makeText(this, "No image was selected", Toast.LENGTH_SHORT).show();
             }
-        } else {
         }
     }
 
@@ -103,8 +92,27 @@ public class Register extends AppCompatActivity {
         } else
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(this, "Created Successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, MainActivity.class));
+                    //Upload To Storage
+                    imageUtils.uploadToStorage(imageUri, (t -> {
+                        if (t.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(fullNameString)
+                                        .setPhotoUri(Uri.parse(t.getResult().toString()))
+                                        .build();
+                                user.updateProfile(profileUpdates).addOnCompleteListener(finishedTask -> {
+                                    if (finishedTask.isSuccessful()) {
+                                        Toast.makeText(this, "User Created Successfully", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(this, MainActivity.class));
+                                    }
+                                });
+                            }
+                        } else if (!t.isSuccessful()) {
+                            Log.d("Register", "uploadToStorage: " + Objects.requireNonNull(task.getException()).getMessage());
+                            Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                        }
+                    }));
                 } else {
                     try {
                         throw Objects.requireNonNull(task.getException());
