@@ -11,8 +11,14 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.colman.social_app.R;
+import com.colman.social_app.SocialApplication;
+import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.entities.Post;
+
+import java.util.UUID;
 
 public class AddPostFragment extends Fragment {
 
@@ -23,11 +29,13 @@ public class AddPostFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String postID = "";
 
-     Button saveButton;
-     Button deleteButton;
+    private NewPostViewModel viewModel;
 
-     EditText postTitle;
-     EditText postContent;
+    private Button saveButton;
+    private Button deleteButton;
+
+    private EditText postTitle;
+    private EditText postContent;
 
     public AddPostFragment() {
         // Required empty public constructor
@@ -55,6 +63,9 @@ public class AddPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(NewPostViewModel.class);
+
         saveButton = view.findViewById(R.id.save_button);
         deleteButton = view.findViewById(R.id.delete_button);
 
@@ -66,7 +77,14 @@ public class AddPostFragment extends Fragment {
         postContent = view.findViewById(R.id.postContent);
 
         saveButton.setOnClickListener(v -> {
-
+            Post newPost = new Post(
+                    UUID.randomUUID().toString(),
+                    postTitle.getText().toString(),
+                    postContent.getText().toString(),
+                    "",
+                    ""
+            );
+            viewModel.savePost(newPost);
         });
 
     }
