@@ -1,7 +1,6 @@
 package com.colman.social_app.fragments.newPostFragment;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
@@ -82,9 +82,11 @@ public class AddPostFragment extends Fragment {
                     postTitle.getText().toString(),
                     postContent.getText().toString(),
                     "",
-                    ""
+                    viewModel.getCurrUserEmail()
             );
             viewModel.savePost(newPost);
+            Navigation.findNavController(v)
+                    .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
         });
 
     }

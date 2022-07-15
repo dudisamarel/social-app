@@ -4,11 +4,13 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import com.colman.social_app.repositories.SharedPreferencesRepo;
 import com.colman.social_app.repositories.SocialAppDataBase;
 
 public class SocialApplication extends Application {
     private SocialAppDataBase db;
     private ViewModelFactory viewModelFactory;
+    private SharedPreferencesRepo sharedPref;
 
     @Override
     public void onCreate() {
@@ -19,7 +21,8 @@ public class SocialApplication extends Application {
                 "social-db"
         ).build();
 
-        viewModelFactory = new ViewModelFactory(db);
+        sharedPref = new SharedPreferencesRepo(this);
+        viewModelFactory = new ViewModelFactory(db, sharedPref);
     }
 
     public SocialAppDataBase getDb() {
