@@ -1,0 +1,20 @@
+package com.colman.social_app.repositories;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+public class SharedPreferencesRepo {
+    SharedPreferences sharedPreferences;
+
+    public SharedPreferencesRepo(Context context) {
+        sharedPreferences = context.getSharedPreferences("SocialApp", Context.MODE_PRIVATE);
+    }
+
+    public void setCurrUser(String currUserEmail) {
+        sharedPreferences.edit().putString("email", currUserEmail).apply();
+    }
+
+    public String getCurrUserEmail() {
+        return sharedPreferences.getString("email", "");
+    }
+}
