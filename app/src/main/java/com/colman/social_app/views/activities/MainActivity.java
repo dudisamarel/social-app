@@ -1,39 +1,20 @@
 package com.colman.social_app.views.activities;
 
-import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
-import com.colman.social_app.R;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
-
-import com.colman.social_app.entities.User;
+import com.colman.social_app.R;
 import com.colman.social_app.fragments.UserProfile;
-import com.colman.social_app.services.utils.ImageUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+    NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +22,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        findViewById(R.id.icon).setOnClickListener(e -> switchToMainFragment());
 //        switchToMainFragment();
+        initNavigation();
         initNavBar();
     }
 
 
-    public void loadFragment(Fragment fragment, boolean shouldAddToBacKStack, boolean shouldEmptyAllStack) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (shouldEmptyAllStack) {
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-        transaction.replace(R.id.fragment_container, fragment);
-        if (shouldAddToBacKStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
+//    public void loadFragment(Fragment fragment, boolean shouldAddToBacKStack, boolean shouldEmptyAllStack) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        if (shouldEmptyAllStack) {
+//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//        }
+//        transaction.replace(R.id.fragment_container, fragment);
+//        if (shouldAddToBacKStack) {
+//            transaction.addToBackStack(null);
+//        }
+//        transaction.commit();
+//    }
+
+    private void initNavigation() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        navController = navHostFragment.getNavController();
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         fragment.onActivityResult(requestCode, resultCode, data);
@@ -69,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.profile:
-                    loadFragment(new UserProfile(), false, true);
+                    navController.navigate(R.id.action_global_userProfile);
                     return true;
                 case R.id.home:
+                    navController.navigate(R.id.action_global_feedFragment);
                     return true;
             }
             return false;
