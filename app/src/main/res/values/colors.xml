@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="input_bg">#F5F5F5</color>
     <color name="gray">#999998</color>
-    <color name="red">#FF0000</color>
-    <color name="green">#46E146</color>
+	<color name="dialog_green">#FF1C7920</color>
+    <color name="dialog_red">#80140C</color>
 
 </resources>

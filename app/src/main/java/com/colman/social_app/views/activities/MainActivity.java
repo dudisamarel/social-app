@@ -1,12 +1,15 @@
 package com.colman.social_app.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.colman.social_app.R;
+import com.colman.social_app.fragments.UserProfile;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        fragment.onActivityResult(requestCode, resultCode, data);
+    }
+
     protected void initNavBar() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -57,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
 
 //

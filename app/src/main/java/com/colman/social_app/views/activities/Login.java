@@ -31,7 +31,8 @@ public class Login extends AppCompatActivity {
         ViewModelFactory factory = ((SocialApplication) getApplication()).getViewModelFactory();
         viewModel = new ViewModelProvider(this,factory).get(LoginViewModel.class);
 
-        startActivity(new Intent(this, MainActivity.class));
+        //startActivity(new Intent(this, MainActivity.class));
+
         setContentView(R.layout.activity_login);
         email = findViewById(R.id.emailET);
         password = findViewById(R.id.passwordET);
