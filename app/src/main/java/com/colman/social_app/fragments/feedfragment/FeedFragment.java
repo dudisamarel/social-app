@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.colman.social_app.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,6 +23,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class FeedFragment extends Fragment {
 
     FloatingActionButton newPostFAB;
+    RecyclerView postFeed;
+
 
     public FeedFragment() {
         // Required empty public constructor
@@ -58,6 +61,8 @@ public class FeedFragment extends Fragment {
         newPostFAB.setOnClickListener(v-> {
             Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
         });
+
+
     }
 
     @Override
