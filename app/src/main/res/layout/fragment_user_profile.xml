@@ -1,25 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#D6DADD"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context="com.colman.social_app.views.activities.Login">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Profile"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#D6DADD"
+	android:orientation="vertical"
+	tools:context="com.colman.social_app.fragments.UserProfile">
 
 
+	<com.google.android.material.imageview.ShapeableImageView
+		android:id="@+id/profileIV"
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		android:layout_gravity="center"
+		android:layout_marginTop="100dp"
+		android:background="@mipmap/avatar"
+		app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+		app:strokeColor="@color/black">
 
+	</com.google.android.material.imageview.ShapeableImageView>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="20dp"
+		android:layout_marginTop="40dp"
+		android:orientation="horizontal">
+
+		<TextView
+			android:id="@+id/full_nameTV"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="3"
+			android:gravity="center"
+			android:text="@string/full_name"
+			android:textColor="@color/black"
+			android:textSize="20sp"
+			android:textStyle="bold"/>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1" />
+
+		<ImageButton
+			android:id="@+id/editNameIB"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:layout_gravity="center"
+			android:background="@mipmap/ic_edit" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="20dp"
+		android:layout_marginTop="40dp"
+		android:orientation="horizontal">
+
+		<TextView
+			android:id="@+id/emailTV"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="3"
+			android:gravity="center"
+			android:text="@string/email"
+			android:textColor="@color/black"
+			android:textSize="20sp"
+			android:textStyle="bold
+"/>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1" />
+
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="20dp"
+		android:layout_marginTop="40dp"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="3"
+			android:gravity="center"
+			android:text="@string/change_password"
+			android:textColor="@color/black"
+			android:textSize="25sp" />
+
+		<Space
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_weight="1" />
+
+		<ImageButton
+			android:id="@+id/editPasswordIB"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:layout_gravity="center"
+			android:background="@mipmap/ic_edit" />
+	</LinearLayout>
 </LinearLayout>
 
 

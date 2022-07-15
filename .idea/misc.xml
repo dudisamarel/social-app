@@ -15,7 +15,13 @@
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/avatar.xml" value="0.2" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/avatar_round.xml" value="0.2" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.1644021739130435" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_profile_name.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/dialog_profile_password.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/edit_profile_field.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.165" />
       </map>
     </option>
   </component>
