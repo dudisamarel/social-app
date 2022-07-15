@@ -25,4 +25,9 @@
     <string name="select_image">Select Profile Image</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_new_post">Create New Post</string>
+    <string name="title">Title:</string>
+    <string name="content">Content</string>
+    <string name="save">SAVE</string>
+    <string name="delete">DELETE</string>
 </resources>

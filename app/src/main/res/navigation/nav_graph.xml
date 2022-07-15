@@ -28,7 +28,7 @@
     <action android:id="@+id/action_global_userProfile" app:destination="@id/userProfile" />
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="com.colman.social_app.AddPostFragment"
+        android:name="com.colman.social_app.fragments.newPostFragment.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" />
 </navigation>
