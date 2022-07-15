@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "posts")
 public class Post {
 
@@ -14,6 +16,9 @@ public class Post {
     String content;
     String attachmentURI;
     String uploaderEmail;
+//    Date created;
+//    Date edited;
+//    boolean isDeleted;
 
     public Post() {
 
@@ -25,6 +30,10 @@ public class Post {
         this.content = content;
         this.attachmentURI = attachmentURI;
         this.uploaderEmail = uploaderEmail;
+        Date date = new Date();
+//        this.created = date;
+//        this.edited = date;
+//        isDeleted = false;
     }
 
     public String getId() {
@@ -66,4 +75,28 @@ public class Post {
     public void setUploaderEmail(String uploaderEmail) {
         this.uploaderEmail = uploaderEmail;
     }
+
+//    public Date getCreated() {
+//        return created;
+//    }
+//
+//    public void setCreated(Date created) {
+//        this.created = created;
+//    }
+//
+//    public Date getEdited() {
+//        return edited;
+//    }
+//
+//    public void setEdited(Date edited) {
+//        this.edited = edited;
+//    }
+//
+//    public boolean isDeleted() {
+//        return isDeleted;
+//    }
+//
+//    public void setDeleted(boolean deleted) {
+//        isDeleted = deleted;
+//    }
 }

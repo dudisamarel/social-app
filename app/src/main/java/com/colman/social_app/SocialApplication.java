@@ -6,20 +6,26 @@ import androidx.room.Room;
 
 import com.colman.social_app.repositories.SharedPreferencesRepo;
 import com.colman.social_app.repositories.SocialAppDataBase;
+import com.colman.social_app.services.utils.Converters;
 
 public class SocialApplication extends Application {
     private SocialAppDataBase db;
     private ViewModelFactory viewModelFactory;
     private SharedPreferencesRepo sharedPref;
+    private Converters converters;
 
     @Override
     public void onCreate() {
+
+        converters = new Converters();
+
         super.onCreate();
         db = Room.databaseBuilder(
                 getApplicationContext(),
                 SocialAppDataBase.class,
                 "social-db"
-        ).build();
+        )//.addTypeConverter(converters)
+        .build();
 
         sharedPref = new SharedPreferencesRepo(this);
         viewModelFactory = new ViewModelFactory(db, sharedPref);
