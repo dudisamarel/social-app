@@ -1,11 +1,17 @@
 package com.colman.social_app.fragments.feedfragment;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +28,8 @@ import com.colman.social_app.ViewModelFactory;
 import com.colman.social_app.fragments.newPostFragment.NewPostViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 
 public class FeedFragment extends Fragment {
 
@@ -32,6 +40,11 @@ public class FeedFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
 
+    private SensorManager mSensorManager;
+    private float mAccel;
+    private float mAccelCurrent;
+    private float mAccelLast;
+
     public FeedFragment() {
         // Required empty public constructor
     }
@@ -39,11 +52,43 @@ public class FeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
+
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta;
+            if (mAccel > 12) {
+                Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
+            }
+        }
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mSensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
+        Objects.requireNonNull(mSensorManager).registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        mAccel = 10f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
+
+
+
+
         newPostFAB = view.findViewById(R.id.newPostFAB);
         newPostFAB.setOnClickListener(v-> {
             Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
