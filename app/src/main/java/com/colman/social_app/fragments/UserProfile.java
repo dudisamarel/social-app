@@ -64,7 +64,9 @@ public class UserProfile extends Fragment {
             fullName.setText(user.getDisplayName());
             Picasso.get().load(user.getPhotoUrl()).into(profileIV);
         } else {
-            startActivity(new Intent(v.getContext(), Login.class));
+            Intent intent = new Intent(v.getContext(), Login.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
         v.findViewById(R.id.editNameIB).setOnClickListener(this::onClickEditName);
         v.findViewById(R.id.editPasswordIB).setOnClickListener(this::onClickEditPassword);

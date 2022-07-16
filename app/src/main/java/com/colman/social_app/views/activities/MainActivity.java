@@ -5,39 +5,37 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.colman.social_app.R;
-import com.colman.social_app.fragments.UserProfile;
+import com.colman.social_app.SocialApplication;
+import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.fragments.UserProfileFragment.UserProfileViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     NavController navController;
+    MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ViewModelFactory factory = ((SocialApplication) this.getApplication()).getViewModelFactory();
+        viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
+        if (!viewModel.isLoggedIn()) {
+            Intent intent = new Intent(this, Login.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_main);
-//        findViewById(R.id.icon).setOnClickListener(e -> switchToMainFragment());
-//        switchToMainFragment();
         initNavigation();
         initNavBar();
+
     }
 
-
-//    public void loadFragment(Fragment fragment, boolean shouldAddToBacKStack, boolean shouldEmptyAllStack) {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        if (shouldEmptyAllStack) {
-//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//        }
-//        transaction.replace(R.id.fragment_container, fragment);
-//        if (shouldAddToBacKStack) {
-//            transaction.addToBackStack(null);
-//        }
-//        transaction.commit();
-//    }
 
     private void initNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
@@ -49,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        fragment = fragment.getChildFragmentManager().getFragments().get(0);
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -67,12 +66,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-//
-//    public void switchToMainFragment() {
-//        loadFragment(new MainFragment(), false, true);
-//    }
 
 
 }
