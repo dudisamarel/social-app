@@ -26,4 +26,12 @@ public class PostsFeedViewModel extends ViewModel {
     LiveData<List<Post>> getAllPosts() {
         return db.getPostDao().getAll();
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        this.db = null;
+        this.sharedPref = null;
+        this.executor = null;
+    }
 }

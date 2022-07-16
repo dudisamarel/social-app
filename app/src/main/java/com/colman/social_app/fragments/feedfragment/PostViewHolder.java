@@ -25,7 +25,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         content = itemView.findViewById(R.id.post_item_content);
 
         itemView.setOnClickListener(v -> {
-            Log.i("ITEM_CLICK", title.getText().toString() + "was clicked");
+            clickListener.onclick(v, currPost);
+            //Log.i("ITEM_CLICK", title.getText().toString() + "was clicked");
         });
     }
 
