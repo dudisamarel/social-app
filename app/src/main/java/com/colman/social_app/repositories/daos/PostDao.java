@@ -21,7 +21,7 @@ public interface PostDao{
     @Insert(onConflict = REPLACE)
     void insert(Post[] posts);
 
-    @Query("SELECT * FROM posts")
+    @Query("SELECT * FROM posts WHERE isDeleted = 0 ORDER BY edited DESC")
     LiveData<List<Post>> getAll();
 
     @Query("SELECT * FROM posts WHERE id = :id")
