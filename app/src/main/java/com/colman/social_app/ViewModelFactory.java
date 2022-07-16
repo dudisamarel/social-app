@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.colman.social_app.fragments.feedfragment.PostsFeedViewModel;
 import com.colman.social_app.fragments.newPostFragment.NewPostViewModel;
+import com.colman.social_app.fragments.postDetailFragment.PostDetailsViewModel;
 import com.colman.social_app.repositories.FirebaseRepo;
 import com.colman.social_app.repositories.SharedPreferencesRepo;
 import com.colman.social_app.repositories.SocialAppDataBase;
@@ -35,6 +36,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new LoginViewModel(sharedPref);
         } else if (modelClass.equals(PostsFeedViewModel.class)) {
             return (T) new PostsFeedViewModel(db, sharedPref, firebaseRepo);
+        } else if (modelClass.equals(PostDetailsViewModel.class)) {
+            return (T) new PostDetailsViewModel(db);
         }
         throw new InvalidParameterException();
     }

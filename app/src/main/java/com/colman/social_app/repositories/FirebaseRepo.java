@@ -34,6 +34,10 @@ public class FirebaseRepo {
         fireBaseDB.collection("Posts").add(Post.toMap(post));
     }
 
+    public void updatePost(Post post) {
+        fireBaseDB.collection("Posts").document(post.getId()).update(Post.toMap(post));
+    }
+
     public Task<QuerySnapshot> getAllPosts() {
         return fireBaseDB.collection("Posts").get();
     }
