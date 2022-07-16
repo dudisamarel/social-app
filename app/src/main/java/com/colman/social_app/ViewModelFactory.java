@@ -38,7 +38,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         } else if (modelClass.equals(PostsFeedViewModel.class)) {
             return (T) new PostsFeedViewModel(db, sharedPref);
         } else if (modelClass.equals(UserProfileViewModel.class)) {
-            return (T) new UserProfileViewModel(firebaseRepo);
+            return (T) new UserProfileViewModel(firebaseRepo,sharedPref);
         }
 
         throw new InvalidParameterException();

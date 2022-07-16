@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        fragment = fragment.getChildFragmentManager().getFragments().get(0);
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 

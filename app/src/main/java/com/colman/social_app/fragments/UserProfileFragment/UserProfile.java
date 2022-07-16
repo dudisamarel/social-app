@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -141,27 +142,34 @@ public class UserProfile extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            ProgressDialog dialog = new ProgressDialog(this.getContext());
+            dialog.setMessage("Loading Image");
+            dialog.setCancelable(false);
+            dialog.setInverseBackgroundForced(false);
+            dialog.show();
             Uri imageUri = data.getData();
             if (imageUri != null) {
                 String imageName = UUID.randomUUID().toString() + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(getActivity().getContentResolver().getType(imageUri));
                 viewModel.uploadImage(imageName, imageUri, t -> {
                     if (t.isSuccessful()) {
-                        if (user != null) {
-                            profileIV.setImageURI(imageUri);
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setPhotoUri(Uri.parse(t.getResult().toString()))
-                                    .build();
-                            user.updateProfile(profileUpdates).addOnCompleteListener(finishedTask -> {
-                                if (finishedTask.isSuccessful()) {
-                                    Toast.makeText(this.getContext(), "Updated profile Image", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                        viewModel.setNewImage(t.getResult().toString(), finishedTask -> {
+                            if (finishedTask.isSuccessful()) {
+                                profileIV.setImageURI(imageUri);
+                                Toast.makeText(this.getContext(), "Updated profile Image", Toast.LENGTH_SHORT).show();
+                                dialog.hide();
+
+                            } else {
+                                dialog.hide();
+                                Toast.makeText(this.getContext(), "Failed updating profile Image", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
+                        dialog.hide();
                         Toast.makeText(this.getContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
+                dialog.hide();
                 Toast.makeText(this.getContext(), "No image was selected", Toast.LENGTH_SHORT).show();
             }
         }

@@ -31,6 +31,7 @@ public class FirebaseRepo {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     FirebaseAuth mAuth;
+    FirebaseUser user;
 
     public FirebaseRepo() {
         fireBaseDB = FirebaseFirestore.getInstance();
@@ -39,10 +40,12 @@ public class FirebaseRepo {
                 .build();
         fireBaseDB.setFirestoreSettings(settings);
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
     }
-    public void signUserOut(){
+
+    public void signUserOut() {
         mAuth.signOut();
     }
 
@@ -78,13 +81,21 @@ public class FirebaseRepo {
         return fireBaseDB.collection("Posts").get();
     }
 
-    public void uploadImageToStorage(String imageName,Uri imageUri, OnCompleteListener<Uri> listener) {
+    public void uploadImageToStorage(String imageName, Uri imageUri, OnCompleteListener<Uri> listener) {
         if (imageUri != null) {
             StorageReference storageReference = firebaseStorage.getReference("photos");
             final StorageReference imageRef = storageReference.child(imageName);
             UploadTask uploadTask = imageRef.putFile(imageUri);
             uploadTask.continueWithTask(task -> imageRef.getDownloadUrl()).addOnCompleteListener(listener);
         }
+    }
+
+    public void updateUserProfileImage(String imageUri, OnCompleteListener<Void> listener) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(Uri.parse(imageUri))
+                .build();
+        if (user != null)
+            user.updateProfile(profileUpdates).addOnCompleteListener(listener);
     }
 
     public void updateUserPassword(String newPassword, OnCompleteListener<Void> listener) {
