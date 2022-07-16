@@ -19,24 +19,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        findViewById(R.id.icon).setOnClickListener(e -> switchToMainFragment());
-//        switchToMainFragment();
         initNavigation();
         initNavBar();
+
     }
 
-
-//    public void loadFragment(Fragment fragment, boolean shouldAddToBacKStack, boolean shouldEmptyAllStack) {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        if (shouldEmptyAllStack) {
-//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//        }
-//        transaction.replace(R.id.fragment_container, fragment);
-//        if (shouldAddToBacKStack) {
-//            transaction.addToBackStack(null);
-//        }
-//        transaction.commit();
-//    }
 
     private void initNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
@@ -67,12 +54,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-//
-//    public void switchToMainFragment() {
-//        loadFragment(new MainFragment(), false, true);
-//    }
 
 
 }

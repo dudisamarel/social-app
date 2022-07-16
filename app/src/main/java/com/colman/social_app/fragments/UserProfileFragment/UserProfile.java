@@ -67,9 +67,8 @@ public class UserProfile extends Fragment {
         v.findViewById(R.id.logoutBtn).setOnClickListener(view -> {
             viewModel.signOut();
             Intent intent = new Intent(v.getContext(), Login.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(new Intent(v.getContext(), Login.class));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
         return v;
     }
