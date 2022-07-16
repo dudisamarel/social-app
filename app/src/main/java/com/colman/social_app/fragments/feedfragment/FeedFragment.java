@@ -1,6 +1,7 @@
 package com.colman.social_app.fragments.feedfragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,41 +10,29 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.colman.social_app.R;
+import com.colman.social_app.SocialApplication;
+import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.fragments.newPostFragment.NewPostViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FeedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FeedFragment extends Fragment {
 
     FloatingActionButton newPostFAB;
+    RecyclerView postFeed;
+    PostsFeedAdapter feedAdapter;
+    PostsFeedViewModel postsFeedViewModel;
+
 
     public FeedFragment() {
         // Required empty public constructor
     }
-
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment FeedFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static FeedFragment newInstance(String param1, String param2) {
-//        FeedFragment fragment = new FeedFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +45,28 @@ public class FeedFragment extends Fragment {
         newPostFAB = view.findViewById(R.id.newPostFAB);
         newPostFAB.setOnClickListener(v-> {
             Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
+        });
+
+        postFeed = view.findViewById(R.id.post_feed_recyclerView);
+        feedAdapter = new PostsFeedAdapter((itemView, post) -> {
+//            Navigation.findNavController(itemView).navigate(
+//                    NewsFeedFragmentDirections.actionNewsFeedFragmentToArticleDetailsFragment(article.id)
+//            );
+            Log.i("POST_CLICK", post.getTitle());
+        });
+
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
+
+
+        // TODO: INITIATE THE REFRESH FUNCTION
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        postFeed.setLayoutManager(linearLayoutManager);
+        postFeed.setAdapter(feedAdapter);
+
+        postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
+            feedAdapter.setData(posts);
         });
     }
 
