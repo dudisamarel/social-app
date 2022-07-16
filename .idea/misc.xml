@@ -3,8 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_feed.xml" value="0.1" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/post_list_item.xml" value="0.1" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2095" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/circle.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/circle_img.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.168" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/ic_profile_foreground.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/input_bg.xml" value="0.168" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/stroke.xml" value="0.3845" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font-v26/font.xml" value="0.4401041666666667" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font/font.xml" value="0.4390625" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font/fonts.xml" value="0.434375" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font/poppins_medium.xml" value="0.434375" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_register.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/fragment_add_post.xml" value="0.40989583333333335" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/fragment_feed.xml" value="0.40989583333333335" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/fragment_user_profile.xml" value="0.33229166666666665" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33125" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/menu/menu_main.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/avatar.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/avatar_round.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_profile.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_profile_round.xml" value="0.2" />
       </map>
     </option>
   </component>
