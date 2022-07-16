@@ -54,7 +54,6 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         newPostFAB = view.findViewById(R.id.newPostFAB);
-
         newPostFAB.setOnClickListener(v-> {
             Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
         });

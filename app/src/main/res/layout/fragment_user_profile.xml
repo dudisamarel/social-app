@@ -6,7 +6,7 @@
 	android:layout_height="match_parent"
 	android:background="#D6DADD"
 	android:orientation="vertical"
-	tools:context="com.colman.social_app.fragments.UserProfile">
+	tools:context="com.colman.social_app.fragments.UserProfileFragment.UserProfile">
 
 
 	<com.google.android.material.imageview.ShapeableImageView

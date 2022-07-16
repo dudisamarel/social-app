@@ -6,7 +6,7 @@
     app:startDestination="@id/feedFragment">
     <fragment
         android:id="@+id/userProfile"
-        android:name="com.colman.social_app.fragments.UserProfile"
+        android:name="com.colman.social_app.fragments.UserProfileFragment.UserProfile"
         android:label="UserProfile" >
         <action
             android:id="@+id/action_userProfile_to_feedFragment"

@@ -1,4 +1,4 @@
-package com.colman.social_app.fragments;
+package com.colman.social_app.fragments.UserProfileFragment;
 
 import static android.app.Activity.RESULT_OK;
 import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
