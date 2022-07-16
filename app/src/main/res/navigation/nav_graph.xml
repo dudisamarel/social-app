@@ -7,16 +7,17 @@
     <fragment
         android:id="@+id/userProfile"
         android:name="com.colman.social_app.fragments.UserProfile"
-        android:label="UserProfile" >
+        android:label="UserProfile">
         <action
             android:id="@+id/action_userProfile_to_feedFragment"
-            app:destination="@id/feedFragment" />
+            app:destination="@id/feedFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.colman.social_app.fragments.feedfragment.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" >
+        tools:layout="@layout/fragment_feed">
         <action
             android:id="@+id/action_feedFragment_to_userProfile"
             app:destination="@id/userProfile" />
@@ -27,17 +28,20 @@
             android:id="@+id/action_feedFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
     </fragment>
-    <action android:id="@+id/action_global_feedFragment" app:destination="@id/feedFragment" />
-    <action android:id="@+id/action_global_userProfile" app:destination="@id/userProfile" />
+    <action
+        android:id="@+id/action_global_feedFragment"
+        app:destination="@id/feedFragment" />
+    <action
+        android:id="@+id/action_global_userProfile"
+        app:destination="@id/userProfile" />
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.colman.social_app.fragments.newPostFragment.AddPostFragment"
         android:label="fragment_add_post"
-        tools:layout="@layout/fragment_add_post"
-    >
+        tools:layout="@layout/fragment_add_post">
         <argument
             android:name="postID"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/postDetailsFragment"
@@ -46,6 +50,6 @@
         tools:layout="@layout/fragment_post_details">
         <argument
             android:name="postID"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 </navigation>
