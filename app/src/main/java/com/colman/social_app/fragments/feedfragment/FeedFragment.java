@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
@@ -28,6 +29,7 @@ public class FeedFragment extends Fragment {
     RecyclerView postFeed;
     PostsFeedAdapter feedAdapter;
     PostsFeedViewModel postsFeedViewModel;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     public FeedFragment() {
@@ -60,6 +62,11 @@ public class FeedFragment extends Fragment {
 
 
         // TODO: INITIATE THE REFRESH FUNCTION
+        swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            postsFeedViewModel.refreshFromRemote();
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         postFeed.setLayoutManager(linearLayoutManager);

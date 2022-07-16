@@ -17,4 +17,12 @@ public class SharedPreferencesRepo {
     public String getCurrUserEmail() {
         return sharedPreferences.getString("email", "");
     }
+
+    public void setLastSync(long syncTimeStamp) {
+        sharedPreferences.edit().putLong("last_sync", syncTimeStamp).apply();
+    }
+
+    public long getLastSync() {
+        return sharedPreferences.getLong("last_sync", 0);
+    }
 }
