@@ -4,7 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity(tableName = "posts")
 public class Post {
@@ -39,8 +43,19 @@ public class Post {
         this.content = content;
         this.attachmentURI = attachmentURI;
         this.uploaderEmail = uploaderEmail;
-        this.created = created;
-        this.edited = edited;
+
+        if (created == null) {
+            this.created = new Date();
+        } else {
+            this.created = created;
+        }
+
+        if (edited == null) {
+            this.edited = new Date();
+        } else {
+            this.edited = created;
+        }
+
         this.isDeleted = isDeleted;
     }
 
@@ -124,5 +139,32 @@ public class Post {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public static Map<String, Object> toMap(Post post) {
+        HashMap<String, Object> postMap = new HashMap<>();
+        postMap.put("_id", post.id);
+        postMap.put("title", post.title);
+        postMap.put("content", post.content);
+        postMap.put("attachmentURI", post.attachmentURI);
+        postMap.put("uploaderEmail", post.uploaderEmail);
+        postMap.put("created", post.created.getTime());
+        postMap.put("edited", post.edited.getTime());
+        postMap.put("isDeleted", post.isDeleted);
+
+        return postMap;
+    }
+
+    public static Post fromMap(DocumentSnapshot map) {
+        return new Post(
+                (String) map.get("_id"),
+                (String) map.get("title"),
+                (String) map.get("content"),
+                (String) map.get("attachmentURI"),
+                (String) map.get("uploaderEmail"),
+                new Date((long) map.get("created")),
+                new Date((long) map.get("edited")),
+                (boolean) map.get("isDeleted")
+        );
     }
 }
