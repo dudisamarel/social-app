@@ -8,12 +8,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Date;
+
 public class FirebaseRepo {
     FirebaseFirestore fireBaseDB;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
 
-    public FirebaseRepo() {
+    SharedPreferencesRepo sharedPreferencesRepo;
+
+    public FirebaseRepo(SharedPreferencesRepo sharedPreferencesRepo) {
         fireBaseDB = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
@@ -22,6 +26,8 @@ public class FirebaseRepo {
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+
+        this.sharedPreferencesRepo = sharedPreferencesRepo;
     }
 
     public void savePost(Post post) {
@@ -30,5 +36,11 @@ public class FirebaseRepo {
 
     public Task<QuerySnapshot> getAllPosts() {
         return fireBaseDB.collection("Posts").get();
+    }
+
+    public Task<QuerySnapshot> getAllPostFromLastSync() {
+        Task<QuerySnapshot> task = fireBaseDB.collection("Posts").whereGreaterThanOrEqualTo("edited", sharedPreferencesRepo.getLastSync()).get();
+        sharedPreferencesRepo.setLastSync(new Date().getTime());
+        return task;
     }
 }

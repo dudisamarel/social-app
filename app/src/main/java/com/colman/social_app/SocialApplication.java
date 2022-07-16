@@ -24,9 +24,10 @@ public class SocialApplication extends Application {
                 "social-db"
         ).build();
 
-        firebaseRepo = new FirebaseRepo();
-
         sharedPref = new SharedPreferencesRepo(this);
+
+        firebaseRepo = new FirebaseRepo(sharedPref);
+
         viewModelFactory = new ViewModelFactory(db, sharedPref, firebaseRepo);
     }
 

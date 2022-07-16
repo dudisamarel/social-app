@@ -34,7 +34,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         } else if (modelClass.equals(LoginViewModel.class)) {
             return (T) new LoginViewModel(sharedPref);
         } else if (modelClass.equals(PostsFeedViewModel.class)) {
-            return (T) new PostsFeedViewModel(db, sharedPref);
+            return (T) new PostsFeedViewModel(db, sharedPref, firebaseRepo);
         }
         throw new InvalidParameterException();
     }
