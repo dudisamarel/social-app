@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.colman.social_app.fragments.UserProfileFragment.UserProfile;
+import com.colman.social_app.fragments.UserProfileFragment.UserProfileViewModel;
 import com.colman.social_app.fragments.feedfragment.PostsFeedViewModel;
 import com.colman.social_app.fragments.newPostFragment.NewPostViewModel;
 import com.colman.social_app.repositories.FirebaseRepo;
@@ -32,10 +34,13 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.equals(NewPostViewModel.class)) {
             return (T) new NewPostViewModel(db, sharedPref, firebaseRepo);
         } else if (modelClass.equals(LoginViewModel.class)) {
-            return (T) new LoginViewModel(sharedPref);
+            return (T) new LoginViewModel(sharedPref, firebaseRepo);
         } else if (modelClass.equals(PostsFeedViewModel.class)) {
             return (T) new PostsFeedViewModel(db, sharedPref);
+        } else if (modelClass.equals(UserProfileViewModel.class)) {
+            return (T) new UserProfileViewModel(firebaseRepo);
         }
+
         throw new InvalidParameterException();
     }
 }

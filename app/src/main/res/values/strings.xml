@@ -45,4 +45,5 @@
 	<string name="new_password">New Password</string>
 	<string name="new_full_name">New Full Name</string>
 	<string name="authenticate">Authenticate</string>
+	<string name="logout">Logout</string>
 </resources>

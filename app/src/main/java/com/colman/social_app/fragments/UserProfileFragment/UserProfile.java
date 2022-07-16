@@ -3,65 +3,59 @@ package com.colman.social_app.fragments.UserProfileFragment;
 import static android.app.Activity.RESULT_OK;
 import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.colman.social_app.R;
+import com.colman.social_app.SocialApplication;
+import com.colman.social_app.ViewModelFactory;
 import com.colman.social_app.services.utils.DialogUtils;
 import com.colman.social_app.services.utils.ImageUtils;
 import com.colman.social_app.views.activities.Login;
-import com.colman.social_app.views.activities.MainActivity;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
+import java.util.UUID;
 
 
 public class UserProfile extends Fragment {
     ImageView profileIV;
-    ImageButton editPasswordIB;
-    ImageButton editNameIB;
-    ImageButton editEmailIB;
+    UserProfileViewModel viewModel;
     ImageUtils iu;
     FirebaseUser user;
+    TextView emailTV;
+    TextView fullNameTV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        ViewModelFactory factory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        viewModel = new ViewModelProvider(this, factory).get(UserProfileViewModel.class);
+        user = viewModel.getUser();
         iu = new ImageUtils(getActivity());
         View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
         if (user != null) {
             profileIV = v.findViewById(R.id.profileIV);
-            TextView email = v.findViewById(R.id.emailTV);
-            email.setText(user.getEmail());
-            TextView fullName = v.findViewById(R.id.full_nameTV);
-            fullName.setText(user.getDisplayName());
+            emailTV = v.findViewById(R.id.emailTV);
+            fullNameTV = v.findViewById(R.id.full_nameTV);
+            emailTV.setText(user.getEmail());
+            fullNameTV.setText(user.getDisplayName());
             Picasso.get().load(user.getPhotoUrl()).into(profileIV);
         } else {
             startActivity(new Intent(v.getContext(), Login.class));
@@ -69,6 +63,13 @@ public class UserProfile extends Fragment {
         v.findViewById(R.id.editNameIB).setOnClickListener(this::onClickEditName);
         v.findViewById(R.id.editPasswordIB).setOnClickListener(this::onClickEditPassword);
         profileIV.setOnClickListener(this::onClickEditImage);
+        v.findViewById(R.id.logoutBtn).setOnClickListener(view -> {
+            viewModel.signOut();
+            Intent intent = new Intent(v.getContext(), Login.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(new Intent(v.getContext(), Login.class));
+        });
         return v;
     }
 
@@ -81,20 +82,16 @@ public class UserProfile extends Fragment {
         EditText full_nameET = dialogView.findViewById(R.id.full_nameET);
         EditText passwordET = dialogView.findViewById(R.id.passwordET);
         change.setOnClickListener(v -> {
-            AuthCredential credential = EmailAuthProvider.getCredential(emailET.getText().toString(), passwordET.getText().toString());
-            user.reauthenticate(credential).addOnCompleteListener(auth -> {
+            viewModel.userReAuth(emailET.getText().toString(), passwordET.getText().toString(), auth -> {
                 if (auth.isSuccessful()) {
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(full_nameET.getText().toString())
-                            .build();
-                    user.updateProfile(profileUpdates)
-                            .addOnCompleteListener(updateProfile -> {
-                                if (updateProfile.isSuccessful()) {
-                                    Toast.makeText(this.getContext(), "Updated name", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                    nameDialog.dismiss();
-                    Log.d("TAG", "onClickEditName: changed ");
+                    viewModel.updateName(full_nameET.getText().toString(), nameTask -> {
+                        if (nameTask.isSuccessful()) {
+                            fullNameTV.setText(full_nameET.getText().toString());
+                            Toast.makeText(this.getContext(), "Updated name", Toast.LENGTH_SHORT).show();
+                        }
+                        nameDialog.dismiss();
+                    });
+                    Log.d("Profile", "name changed ");
                 } else {
                     Toast.makeText(this.getContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
@@ -112,12 +109,12 @@ public class UserProfile extends Fragment {
         EditText old_passwordET = dialogView.findViewById(R.id.old_passwordET);
         EditText new_passwordET = dialogView.findViewById(R.id.new_passwordET);
         change.setOnClickListener(v -> {
-            String em = emailET.getText().toString();
-            String pw = old_passwordET.getText().toString();
-            AuthCredential credential = EmailAuthProvider.getCredential(emailET.getText().toString(), old_passwordET.getText().toString());
-            user.reauthenticate(credential).addOnCompleteListener(auth -> {
+            String email = emailET.getText().toString();
+            String password = old_passwordET.getText().toString();
+            String newPassword = new_passwordET.getText().toString();
+            viewModel.userReAuth(email, password, auth -> {
                 if (auth.isSuccessful()) {
-                    user.updatePassword(new_passwordET.getText().toString()).addOnCompleteListener(t -> {
+                    viewModel.updatePassword(newPassword, t -> {
                                 if (t.isSuccessful()) {
                                     passwordDialog.dismiss();
                                     Toast.makeText(this.getContext(), "Updated password", Toast.LENGTH_SHORT).show();
@@ -129,7 +126,6 @@ public class UserProfile extends Fragment {
                     );
                 } else {
                     Log.d("Profile", auth.getException().getMessage());
-
                     Toast.makeText(this.getContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -147,10 +143,11 @@ public class UserProfile extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
             if (imageUri != null) {
-                profileIV.setImageURI(imageUri);
-                iu.uploadToStorage(imageUri, (t -> {
+                String imageName = UUID.randomUUID().toString() + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(getActivity().getContentResolver().getType(imageUri));
+                viewModel.uploadImage(imageName, imageUri, t -> {
                     if (t.isSuccessful()) {
                         if (user != null) {
+                            profileIV.setImageURI(imageUri);
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setPhotoUri(Uri.parse(t.getResult().toString()))
                                     .build();
@@ -163,7 +160,7 @@ public class UserProfile extends Fragment {
                     } else {
                         Toast.makeText(this.getContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
                     }
-                }));
+                });
             } else {
                 Toast.makeText(this.getContext(), "No image was selected", Toast.LENGTH_SHORT).show();
             }
