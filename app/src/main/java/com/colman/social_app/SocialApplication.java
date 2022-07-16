@@ -24,8 +24,7 @@ public class SocialApplication extends Application {
                 getApplicationContext(),
                 SocialAppDataBase.class,
                 "social-db"
-        )//.addTypeConverter(converters)
-        .build();
+        ).build();
 
         sharedPref = new SharedPreferencesRepo(this);
         viewModelFactory = new ViewModelFactory(db, sharedPref);

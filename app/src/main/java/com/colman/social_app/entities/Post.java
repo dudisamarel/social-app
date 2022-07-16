@@ -16,24 +16,50 @@ public class Post {
     String content;
     String attachmentURI;
     String uploaderEmail;
-//    Date created;
-//    Date edited;
-//    boolean isDeleted;
+    Date created;
+    Date edited;
+    boolean isDeleted;
 
     public Post() {
 
     }
 
-    public Post(String id, String title, String content, String attachmentURI, String uploaderEmail) {
+    public Post(
+            String id,
+            String title,
+            String content,
+            String attachmentURI,
+            String uploaderEmail,
+            Date created,
+            Date edited,
+            boolean isDeleted
+    ) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.attachmentURI = attachmentURI;
+        this.uploaderEmail = uploaderEmail;
+        this.created = created;
+        this.edited = edited;
+        this.isDeleted = isDeleted;
+    }
+
+    public Post(
+            String id,
+            String title,
+            String content,
+            String attachmentURI,
+            String uploaderEmail
+    ) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.attachmentURI = attachmentURI;
         this.uploaderEmail = uploaderEmail;
         Date date = new Date();
-//        this.created = date;
-//        this.edited = date;
-//        isDeleted = false;
+        this.created = date;
+        this.edited = date;
+        this.isDeleted = false;
     }
 
     public String getId() {
@@ -76,27 +102,27 @@ public class Post {
         this.uploaderEmail = uploaderEmail;
     }
 
-//    public Date getCreated() {
-//        return created;
-//    }
-//
-//    public void setCreated(Date created) {
-//        this.created = created;
-//    }
-//
-//    public Date getEdited() {
-//        return edited;
-//    }
-//
-//    public void setEdited(Date edited) {
-//        this.edited = edited;
-//    }
-//
-//    public boolean isDeleted() {
-//        return isDeleted;
-//    }
-//
-//    public void setDeleted(boolean deleted) {
-//        isDeleted = deleted;
-//    }
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getEdited() {
+        return edited;
+    }
+
+    public void setEdited(Date edited) {
+        this.edited = edited;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }
