@@ -13,7 +13,7 @@ import com.colman.social_app.entities.Post;
 import java.util.List;
 
 @Dao
-public interface PostDao{
+public interface PostDao {
 
     @Insert(onConflict = REPLACE)
     void upsert(Post post); //update and insert
@@ -24,6 +24,11 @@ public interface PostDao{
     @Query("SELECT * FROM posts WHERE isDeleted = 0 ORDER BY edited DESC")
     LiveData<List<Post>> getAll();
 
+    @Query("SELECT * FROM posts WHERE isDeleted = 0 " +
+            "AND (title LIKE '%' || :filter || '%' OR content LIKE '%' || :filter || '%')" +
+            " ORDER BY edited DESC")
+    LiveData<List<Post>> getAllWithFilter(String filter);
+
     @Query("SELECT * FROM posts WHERE id = :id")
     LiveData<Post> getByID(String id);
 
@@ -32,7 +37,6 @@ public interface PostDao{
 
     @Query("UPDATE posts SET isDeleted = 1 WHERE id = :id")
     void delete(String id);
-
 
 
 }
