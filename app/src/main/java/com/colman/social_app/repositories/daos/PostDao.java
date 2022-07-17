@@ -30,5 +30,9 @@ public interface PostDao{
     @Delete
     void delete(Post post);
 
+    @Query("UPDATE posts SET isDeleted = 1 WHERE id = :id")
+    void delete(String id);
+
+
 
 }

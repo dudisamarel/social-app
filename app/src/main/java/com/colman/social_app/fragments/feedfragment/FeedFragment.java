@@ -69,7 +69,7 @@ public class FeedFragment extends Fragment {
             acceleration = acceleration * 0.9f + delta;
             if (acceleration > MINIMAL_ACCELERATION) {
                 Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
+                Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
             }
         }
         @Override
@@ -92,15 +92,23 @@ public class FeedFragment extends Fragment {
 
 
         newPostFAB = view.findViewById(R.id.newPostFAB);
-        newPostFAB.setOnClickListener(v-> {
-            Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
+        newPostFAB.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
         });
 
         postFeed = view.findViewById(R.id.post_feed_recyclerView);
         feedAdapter = new PostsFeedAdapter((itemView, post) -> {
-//            Navigation.findNavController(itemView).navigate(
-//                    NewsFeedFragmentDirections.actionNewsFeedFragmentToArticleDetailsFragment(article.id)
-//            );
+
+            // if clicked post belong to curr user
+            if (post.getUploaderEmail().equals(postsFeedViewModel.getCurrUserEmail())) {
+                Navigation.findNavController(itemView).navigate(
+                        FeedFragmentDirections.actionFeedFragmentToAddPostFragment(post.getId())
+                );
+            } else { // if clicked post belong to other user
+                Navigation.findNavController(itemView).navigate(
+                        FeedFragmentDirections.actionFeedFragmentToPostDetailsFragment(post.getId())
+                );
+            }
             Log.i("POST_CLICK", post.getTitle());
         });
 
