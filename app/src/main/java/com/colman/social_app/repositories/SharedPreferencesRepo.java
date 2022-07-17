@@ -30,4 +30,12 @@ public class SharedPreferencesRepo {
     public long getLastSync() {
         return sharedPreferences.getLong("last_sync", 0);
     }
+
+    public boolean getViewCurrentUserPosts() {
+        return sharedPreferences.getBoolean("view_user_posts", false);
+    }
+
+    public void setViewCurrentUserPosts(boolean viewCurrentUserPosts) {
+        sharedPreferences.edit().putBoolean("view_user_posts", viewCurrentUserPosts).apply();
+    }
 }
