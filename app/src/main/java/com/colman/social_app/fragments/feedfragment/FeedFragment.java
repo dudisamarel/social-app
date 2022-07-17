@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
-import com.colman.social_app.fragments.newPostFragment.NewPostViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
@@ -40,10 +38,11 @@ public class FeedFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
 
-    private SensorManager mSensorManager;
-    private float mAccel;
-    private float mAccelCurrent;
-    private float mAccelLast;
+    private SensorManager sensorManager;
+    private float acceleration;
+    private float accelerationCurrent;
+    private float accelerationLast;
+    private final float MINIMAL_ACCELERATION = 12;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -57,17 +56,19 @@ public class FeedFragment extends Fragment {
     }
 
     private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
         @Override
         public void onSensorChanged(SensorEvent event) {
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            float delta = mAccelCurrent - mAccelLast;
-            mAccel = mAccel * 0.9f + delta;
-            if (mAccel > 12) {
-                Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
+            accelerationLast = accelerationCurrent;
+            accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = accelerationCurrent - accelerationLast;
+            acceleration = acceleration * 0.9f + delta;
+            if (acceleration > MINIMAL_ACCELERATION) {
+                //Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
             }
         }
         @Override
@@ -79,12 +80,12 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
-        Objects.requireNonNull(mSensorManager).registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
+        Objects.requireNonNull(sensorManager).registerListener(mSensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        mAccel = 10f;
-        mAccelCurrent = SensorManager.GRAVITY_EARTH;
-        mAccelLast = SensorManager.GRAVITY_EARTH;
+        acceleration = 10f;
+        accelerationCurrent = SensorManager.GRAVITY_EARTH;
+        accelerationLast = SensorManager.GRAVITY_EARTH;
 
 
 
