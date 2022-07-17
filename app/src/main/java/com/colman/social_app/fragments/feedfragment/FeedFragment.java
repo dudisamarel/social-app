@@ -67,7 +67,6 @@ public class FeedFragment extends Fragment {
             accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
             float delta = accelerationCurrent - accelerationLast;
             acceleration = acceleration * 0.9f + delta;
-            Log.d("TAG", "onSensorChanged: " + acceleration);
             if (acceleration > MINIMAL_ACCELERATION) {
                 Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));

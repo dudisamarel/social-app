@@ -1,11 +1,23 @@
 package com.colman.social_app.fragments.newPostFragment;
 
+import static android.app.Activity.RESULT_OK;
+import static com.colman.social_app.constants.Constants.PICK_MEDIA_REQUEST_CODE;
+
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +29,8 @@ import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
 import com.colman.social_app.entities.Post;
+import com.colman.social_app.services.utils.ImageUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -33,9 +47,12 @@ public class AddPostFragment extends Fragment {
 
     private Button saveButton;
     private Button deleteButton;
-
+    private Uri attachmentUriToPost;
     private EditText postTitle;
     private EditText postContent;
+    private VideoView attachmentVV;
+    private ImageView attachmentIV;
+    private String mediaName;
 
     public AddPostFragment() {
         // Required empty public constructor
@@ -66,23 +83,34 @@ public class AddPostFragment extends Fragment {
 
         saveButton = view.findViewById(R.id.save_button);
         deleteButton = view.findViewById(R.id.delete_button);
-
         postTitle = view.findViewById(R.id.postTitle);
         postContent = view.findViewById(R.id.postContent);
+        attachmentVV = view.findViewById(R.id.attachmentVV);
+        attachmentIV = view.findViewById(R.id.attachmentIV);
+        view.findViewById(R.id.addAAttachmentButton).setOnClickListener(v -> {
+            ImageUtils.selectImageOrVideo(this.getContext());
+        });
 
         // new post - no getting post details is needed
         if (postID.equals("")) {
             deleteButton.setVisibility(View.GONE);
-
             saveButton.setOnClickListener(v -> {
-                Post savedPost = new Post(
-                        UUID.randomUUID().toString(),
-                        postTitle.getText().toString(),
-                        postContent.getText().toString(),
-                        "",
-                        newPostViewModel.getCurrUserEmail()
-                );
-                newPostViewModel.savePost(savedPost);
+                newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
+                    if (task.isSuccessful()) {
+                        Post savedPost = new Post(
+                                UUID.randomUUID().toString(),
+                                postTitle.getText().toString(),
+                                postContent.getText().toString(),
+                                task.getResult().toString(),
+                                newPostViewModel.getCurrUserEmail()
+                        );
+                        newPostViewModel.savePost(savedPost);
+                        Toast.makeText(this.getContext(), "Attachment uploaded", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 Navigation.findNavController(v)
                         .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
             });
@@ -90,6 +118,14 @@ public class AddPostFragment extends Fragment {
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());
+                attachmentUriToPost = Uri.parse(post.getAttachmentURI());
+                if (attachmentUriToPost != null) {
+                    if (attachmentUriToPost.toString().toLowerCase().contains("mp4")) {
+                        setVideo();
+                    } else {
+                        setImage();
+                    }
+                }
 
                 saveButton.setOnClickListener(v -> {
                     Post savedPost = new Post(
@@ -123,5 +159,41 @@ public class AddPostFragment extends Fragment {
             });
         }
 
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_MEDIA_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            attachmentUriToPost = data.getData();
+            String type = getActivity().getContentResolver().getType(attachmentUriToPost);
+            mediaName = UUID.randomUUID().toString() + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(type);
+            if (type.toLowerCase().contains("video")) {
+                setVideo();
+            } else {
+                setImage();
+            }
+        }
+    }
+
+    private void setImage() {
+        attachmentVV.setVisibility(View.GONE);
+        attachmentIV.setVisibility(View.VISIBLE);
+        Picasso.get().load(attachmentUriToPost).into(attachmentIV);
+    }
+
+    private void setVideo() {
+        attachmentVV.setVideoURI(attachmentUriToPost);
+        MediaController mediaController = new MediaController(this.getContext());
+        mediaController.setMediaPlayer(attachmentVV);
+        mediaController.setAnchorView(attachmentVV);
+        attachmentVV.setVisibility(View.VISIBLE);
+        attachmentVV.setMediaController(mediaController);
+        attachmentVV.setOnPreparedListener(mp -> {
+            mp.start();
+            attachmentIV.setVisibility(View.GONE);
+            mediaController.show(2000);
+        });
     }
 }
