@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private void initNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         navController = navHostFragment.getNavController();
-
+        navController.enableOnBackPressed(true);
     }
 
     @Override

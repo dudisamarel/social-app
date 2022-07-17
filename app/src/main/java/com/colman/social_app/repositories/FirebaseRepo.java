@@ -26,6 +26,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
+import java.util.Date;
+
 public class FirebaseRepo {
     FirebaseFirestore fireBaseDB;
     FirebaseStorage firebaseStorage;
@@ -33,7 +35,9 @@ public class FirebaseRepo {
     FirebaseAuth mAuth;
     FirebaseUser user;
 
-    public FirebaseRepo() {
+    SharedPreferencesRepo sharedPreferencesRepo;
+
+    public FirebaseRepo(SharedPreferencesRepo sharedPreferencesRepo) {
         fireBaseDB = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
@@ -43,6 +47,8 @@ public class FirebaseRepo {
         user = mAuth.getCurrentUser();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+
+        this.sharedPreferencesRepo = sharedPreferencesRepo;
     }
 
     public void signUserOut() {
@@ -77,9 +83,14 @@ public class FirebaseRepo {
             user.updateProfile(profileUpdates).addOnCompleteListener(listener);
     }
 
+    public void updatePost(Post post) {
+        fireBaseDB.collection("Posts").document(post.getId()).update(Post.toMap(post));
+    }
+
     public Task<QuerySnapshot> getAllPosts() {
         return fireBaseDB.collection("Posts").get();
     }
+
 
     public void uploadImageToStorage(String imageName, Uri imageUri, OnCompleteListener<Uri> listener) {
         if (imageUri != null) {
@@ -102,5 +113,11 @@ public class FirebaseRepo {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null)
             user.updatePassword(newPassword).addOnCompleteListener(listener);
+    }
+
+    public Task<QuerySnapshot> getAllPostFromLastSync() {
+        Task<QuerySnapshot> task = fireBaseDB.collection("Posts").whereGreaterThanOrEqualTo("edited", sharedPreferencesRepo.getLastSync()).get();
+        sharedPreferencesRepo.setLastSync(new Date().getTime());
+        return task;
     }
 }
