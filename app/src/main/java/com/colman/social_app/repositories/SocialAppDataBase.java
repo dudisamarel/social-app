@@ -9,10 +9,9 @@ import com.colman.social_app.repositories.daos.PostDao;
 import com.colman.social_app.services.utils.Converters;
 
 @Database(version = 1, entities = {
-        Post.class
+        Post.class,
 })
 @TypeConverters({Converters.class})
 public abstract class SocialAppDataBase extends RoomDatabase {
-
      public abstract PostDao getPostDao();
 }

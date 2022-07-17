@@ -1,5 +1,6 @@
 package com.colman.social_app.repositories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -12,6 +13,10 @@ public class SharedPreferencesRepo {
 
     public void setCurrUser(String currUserEmail) {
         sharedPreferences.edit().putString("email", currUserEmail).apply();
+    }
+
+    public void clear() {
+        sharedPreferences.edit().clear().apply();
     }
 
     public String getCurrUserEmail() {
