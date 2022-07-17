@@ -19,7 +19,7 @@
     <string name="password_placeholder">Password</string>
     <string name="email_placeholder">Email</string>
     <string name="login_button">Login</string>
-    <string name="don_t_have_account_sign_up">Don\'t have account?</string>
+    <string name="dont_have_account_sign_up">Don\'t have account?</string>
     <string name="sign_up_button">Sign Up</string>
     <string name="full_name_placeholder">Full name</string>
     <string name="sign_in">Sign In</string>
@@ -45,4 +45,7 @@
     <string name="new_password">New Password</string>
     <string name="new_full_name">New Full Name</string>
     <string name="authenticate">Authenticate</string>
+    <string name="logout">Logout</string>
+    <string name="post_title_label">Title:</string>
+    <string name="post_title_placeholder">POST-TITLE</string>
 </resources>

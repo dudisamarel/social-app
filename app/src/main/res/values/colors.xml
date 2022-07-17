@@ -11,5 +11,6 @@
     <color name="gray">#999998</color>
 	<color name="dialog_green">#FF1C7920</color>
     <color name="dialog_red">#80140C</color>
+	<color name="main_button">#3F51B5</color>
 
 </resources>
