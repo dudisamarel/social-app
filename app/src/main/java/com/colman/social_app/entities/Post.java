@@ -77,6 +77,25 @@ public class Post {
         this.isDeleted = false;
     }
 
+    public Post(
+            String id,
+            String title,
+            String content,
+            String attachmentURI,
+            String uploaderEmail,
+            Date created
+    ) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.attachmentURI = attachmentURI;
+        this.uploaderEmail = uploaderEmail;
+        Date date = new Date();
+        this.created = created;
+        this.edited = date;
+        this.isDeleted = false;
+    }
+
     public String getId() {
         return id;
     }

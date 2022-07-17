@@ -58,6 +58,7 @@ public class PostsFeedViewModel extends ViewModel {
         return sharedPref.getCurrUserEmail();
     }
 
+
     @Override
     protected void onCleared() {
         super.onCleared();
