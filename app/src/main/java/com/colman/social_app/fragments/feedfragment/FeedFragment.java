@@ -59,28 +59,6 @@ public class FeedFragment extends Fragment {
 
     }
 
-    private final SensorEventListener sensorListener = new SensorEventListener() {
-
-        // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            accelerationLast = accelerationCurrent;
-            accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            float delta = accelerationCurrent - accelerationLast;
-            acceleration = acceleration * 0.9f + delta;
-            if (acceleration > MINIMAL_ACCELERATION) {
-                Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-    };
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -88,6 +66,30 @@ public class FeedFragment extends Fragment {
 
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
+
+
+        final SensorEventListener sensorListener = new SensorEventListener() {
+
+            // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                accelerationLast = accelerationCurrent;
+                accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+                float delta = accelerationCurrent - accelerationLast;
+                acceleration = acceleration * 0.9f + delta;
+                if (acceleration > MINIMAL_ACCELERATION) {
+                    Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            }
+        };
 
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
         Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
