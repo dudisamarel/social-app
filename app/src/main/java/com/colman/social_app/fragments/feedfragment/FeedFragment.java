@@ -55,7 +55,7 @@ public class FeedFragment extends Fragment {
 
     }
 
-    private final SensorEventListener mSensorListener = new SensorEventListener() {
+    private final SensorEventListener sensorListener = new SensorEventListener() {
 
         // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
         @Override
@@ -68,7 +68,8 @@ public class FeedFragment extends Fragment {
             float delta = accelerationCurrent - accelerationLast;
             acceleration = acceleration * 0.9f + delta;
             if (acceleration > MINIMAL_ACCELERATION) {
-                //Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment());
             }
         }
         @Override
@@ -81,7 +82,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
-        Objects.requireNonNull(sensorManager).registerListener(mSensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
         acceleration = 10f;
         accelerationCurrent = SensorManager.GRAVITY_EARTH;
