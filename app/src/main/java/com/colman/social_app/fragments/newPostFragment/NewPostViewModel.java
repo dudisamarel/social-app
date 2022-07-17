@@ -39,4 +39,11 @@ public class NewPostViewModel extends ViewModel {
     public String getCurrUserEmail() {
         return sharedPref.getCurrUserEmail();
     }
+
+    public void deletePost(Post post) {
+        executor.execute(() -> {
+            this.dataBase.getPostDao().delete(post.getId());
+            firebaseRepo.savePost(post);
+        });
+    }
 }

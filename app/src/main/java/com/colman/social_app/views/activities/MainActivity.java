@@ -12,7 +12,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
-import com.colman.social_app.fragments.UserProfileFragment.UserProfileViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void initNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         navController = navHostFragment.getNavController();
-
+        navController.enableOnBackPressed(true);
     }
 
     @Override

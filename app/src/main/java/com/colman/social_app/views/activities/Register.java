@@ -99,7 +99,9 @@ public class Register extends AppCompatActivity {
                             if (user != null) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(fullNameString)
-                                        .setPhotoUri(Uri.parse(t.getResult().toString()))
+                                        .
+
+                                        setPhotoUri(Uri.parse(t.getResult().toString()))
                                         .build();
                                 user.updateProfile(profileUpdates).addOnCompleteListener(finishedTask -> {
                                     if (finishedTask.isSuccessful()) {
