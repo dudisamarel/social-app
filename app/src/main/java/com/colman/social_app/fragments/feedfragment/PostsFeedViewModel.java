@@ -34,6 +34,9 @@ public class PostsFeedViewModel extends ViewModel {
     public LiveData<List<Post>> getAllPosts() {
         return db.getPostDao().getAll();
     }
+    public LiveData<List<Post>> getFilteredPosts(String filter) {
+        return db.getPostDao().getAllWithFilter(filter);
+    }
 
     public void refreshFromRemote() {
         firebaseRepo.getAllPostFromLastSync()
