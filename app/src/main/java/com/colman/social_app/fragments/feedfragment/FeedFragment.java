@@ -47,6 +47,28 @@ public class FeedFragment extends Fragment {
     private float accelerationCurrent;
     private float accelerationLast;
     private final float MINIMAL_ACCELERATION = 12;
+    final SensorEventListener sensorListener = new SensorEventListener() {
+
+        // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            accelerationLast = accelerationCurrent;
+            accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = accelerationCurrent - accelerationLast;
+            acceleration = acceleration * 0.9f + delta;
+            if (acceleration > MINIMAL_ACCELERATION) {
+                Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
 
     public FeedFragment() {
         // Required empty public constructor
@@ -67,29 +89,6 @@ public class FeedFragment extends Fragment {
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
 
-
-        final SensorEventListener sensorListener = new SensorEventListener() {
-
-            // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                float x = event.values[0];
-                float y = event.values[1];
-                float z = event.values[2];
-                accelerationLast = accelerationCurrent;
-                accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-                float delta = accelerationCurrent - accelerationLast;
-                acceleration = acceleration * 0.9f + delta;
-                if (acceleration > MINIMAL_ACCELERATION) {
-                    Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
-                }
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            }
-        };
 
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
         Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -162,5 +161,18 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_feed, container, false);
+    }
+
+    @Override
+    public void onPause() {
+        sensorManager.unregisterListener(sensorListener);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
     }
 }
