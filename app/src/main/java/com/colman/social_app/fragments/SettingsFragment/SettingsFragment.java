@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.colman.social_app.R;
@@ -45,7 +46,10 @@ public class SettingsFragment extends Fragment {
 
         enableShakingSwitch.setChecked(settingsFragmentViewModel.getEnableShaking());
 
-        enableShakingSwitch.setOnCheckedChangeListener(null);
-
+        enableShakingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settingsFragmentViewModel.setEnableShaking(isChecked);
+            }
+        });
     }
 }
