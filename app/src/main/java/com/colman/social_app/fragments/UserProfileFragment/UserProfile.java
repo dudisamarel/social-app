@@ -1,7 +1,7 @@
 package com.colman.social_app.fragments.UserProfileFragment;
 
 import static android.app.Activity.RESULT_OK;
-import static com.colman.social_app.constants.Constants.PICK_IMAGE_REQUEST_CODE;
+import static com.colman.social_app.constants.Constants.PICK_MEDIA_REQUEST_CODE;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
@@ -36,7 +37,6 @@ import com.colman.social_app.services.utils.ImageUtils;
 import com.colman.social_app.views.activities.Login;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -44,7 +44,6 @@ import java.util.UUID;
 public class UserProfile extends Fragment {
     ImageView profileIV;
     UserProfileViewModel viewModel;
-    ImageUtils iu;
     FirebaseUser user;
     TextView emailTV;
     TextView fullNameTV;
@@ -54,7 +53,6 @@ public class UserProfile extends Fragment {
         ViewModelFactory factory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         viewModel = new ViewModelProvider(this, factory).get(UserProfileViewModel.class);
         user = viewModel.getUser();
-        iu = new ImageUtils(getActivity());
         View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
         if (user != null) {
             profileIV = v.findViewById(R.id.profileIV);
@@ -62,7 +60,7 @@ public class UserProfile extends Fragment {
             fullNameTV = v.findViewById(R.id.full_nameTV);
             emailTV.setText(user.getEmail());
             fullNameTV.setText(user.getDisplayName());
-            Picasso.get().load(user.getPhotoUrl()).into(profileIV);
+            Glide.with(this).load(user.getPhotoUrl()).into(profileIV);
         } else {
             Intent intent = new Intent(v.getContext(), Login.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -152,13 +150,13 @@ public class UserProfile extends Fragment {
     }
 
     private void onClickEditImage(View view) {
-        iu.selectImage();
+        ImageUtils.selectImage(this.getContext());
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == PICK_MEDIA_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ProgressDialog dialog = new ProgressDialog(this.getContext());
             dialog.setMessage("Loading Image");
             dialog.setCancelable(false);
@@ -173,20 +171,20 @@ public class UserProfile extends Fragment {
                             if (finishedTask.isSuccessful()) {
                                 profileIV.setImageURI(imageUri);
                                 Toast.makeText(this.getContext(), "Updated profile Image", Toast.LENGTH_SHORT).show();
-                                dialog.hide();
+                                dialog.dismiss();
 
                             } else {
-                                dialog.hide();
+                                dialog.dismiss();
                                 Toast.makeText(this.getContext(), "Failed updating profile Image", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
-                        dialog.hide();
+                        dialog.dismiss();
                         Toast.makeText(this.getContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
-                dialog.hide();
+                dialog.dismiss();
                 Toast.makeText(this.getContext(), "No image was selected", Toast.LENGTH_SHORT).show();
             }
         }

@@ -11,7 +11,7 @@
     <string name="title">Title</string>
     <string name="content">Content</string>
     <string name="save">Save</string>
-    <string name="delete">Cancel</string>
+    <string name="delete">Delete</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="login_header">Sign In</string>
@@ -52,4 +52,10 @@
     <string name="settings_page_title">Settings</string>
     <string name="enable_shaking_switch_details">Enable opening new post\npage on shake</string>
     <string name="enable_shaking_explanation">Enable Shaking</string>
+    <string name="add_attachment">Add Attachment</string>
+    <string name="attachment_preview">Attachment Preview</string>
+    <string name="search">Search</string>
+    <string name="toggle_to_only_view_your_posts">Toggle to only view your posts</string>
+    <string name="toggle_text_all">Toggle to see all posts</string>
+    <string name="toggle_text_only_user">Toggle to only view your posts</string>
 </resources>

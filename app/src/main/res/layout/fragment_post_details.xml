@@ -1,29 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/backgroundcolor"
+    android:orientation="vertical"
+    android:weightSum="3"
     tools:context=".fragments.postDetailFragment.PostDetailsFragment">
 
-    <TextView
-        android:id="@+id/postDetailTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/post_title_placeholder"
-        android:textAlignment="center"
-        android:textSize="32sp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginHorizontal="10dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/postDetailContent"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/postDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/title" />
+
+        <TextView
+            android:id="@+id/postDetailContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            tools:text="@string/content" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/attachmentIV"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/postDetailTitle"
-        app:layout_constraintStart_toEndOf="@id/postDetailTitle"
-        app:layout_constraintTop_toBottomOf="@id/postDetailTitle" />
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/avatars" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <VideoView
+        android:id="@+id/attachmentVV"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center" />
+
+
+</LinearLayout>

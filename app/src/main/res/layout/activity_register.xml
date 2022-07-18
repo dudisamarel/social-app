@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D6DADD"
+    android:background="@color/backgroundcolor"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="com.colman.social_app.views.activities.Login">
@@ -38,6 +38,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
             android:background="@mipmap/avatar"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
             app:strokeColor="@color/black"

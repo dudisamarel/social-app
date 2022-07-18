@@ -16,6 +16,7 @@ import com.colman.social_app.repositories.SocialAppDataBase;
 import com.colman.social_app.views.activities.Login;
 import com.colman.social_app.views.activities.LoginViewModel;
 import com.colman.social_app.views.activities.MainActivityViewModel;
+import com.colman.social_app.views.activities.RegisterViewModel;
 
 import java.security.InvalidParameterException;
 
@@ -48,6 +49,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new PostDetailsViewModel(db);
         } else if (modelClass.equals(SettingsFragmentViewModel.class)) {
             return (T) new SettingsFragmentViewModel(sharedPref);
+        } else if (modelClass.equals(RegisterViewModel.class)) {
+            return (T) new RegisterViewModel(firebaseRepo);
         }
         throw new InvalidParameterException();
     }
