@@ -43,7 +43,9 @@ public class SettingsFragment extends Fragment {
 
         enableShakingSwitch = view.findViewById(R.id.enableShakingSwitch);
 
-        
+        enableShakingSwitch.setChecked(settingsFragmentViewModel.getEnableShaking());
+
+        enableShakingSwitch.setOnCheckedChangeListener(null);
 
     }
 }
