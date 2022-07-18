@@ -15,14 +15,16 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -43,7 +45,7 @@ public class FeedFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     EditText searchbar;
 
-    Switch switchViewMyPosts;
+    SwitchCompat switchViewMyPosts;
 
 
     private SensorManager sensorManager;
@@ -93,7 +95,7 @@ public class FeedFragment extends Fragment {
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
 
-
+        TextView toggleTV = view.findViewById(R.id.toggle_text);
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
         Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
@@ -108,13 +110,11 @@ public class FeedFragment extends Fragment {
         }
         switchViewMyPosts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    toggleTV.setText(R.string.toggle_text_all);
+                else
+                    toggleTV.setText(R.string.toggle_text_only_user);
                 postsFeedViewModel.setViewCurrentUserPosts(isChecked);
-//                if (isChecked) {
-//                    // The toggle is enabled
-//                } else {
-//                    // The toggle is disabled
-//                }
-
                 searchbar.setText("");
                 postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
                     feedAdapter.setData(posts);
@@ -127,6 +127,7 @@ public class FeedFragment extends Fragment {
         newPostFAB.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
         });
+
 
         postFeed = view.findViewById(R.id.post_feed_recyclerView);
         feedAdapter = new PostsFeedAdapter((itemView, post) -> {
@@ -152,8 +153,7 @@ public class FeedFragment extends Fragment {
             postsFeedViewModel.refreshFromRemote();
         });
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        postFeed.setLayoutManager(linearLayoutManager);
+        postFeed.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         postFeed.setAdapter(feedAdapter);
 
         postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
