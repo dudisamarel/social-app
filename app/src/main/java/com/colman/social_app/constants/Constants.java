@@ -6,6 +6,6 @@ public final class Constants {
         // restrict instantiation
     }
 
-    public static final int PICK_IMAGE_REQUEST_CODE = 22;
+    public static final int PICK_MEDIA_REQUEST_CODE = 22;
 
 }

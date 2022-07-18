@@ -48,4 +48,6 @@
     <string name="logout">Logout</string>
     <string name="post_title_label">Title:</string>
     <string name="post_title_placeholder">POST-TITLE</string>
+    <string name="add_attachment">Add Attachment</string>
+    <string name="attachment_preview">Attachment Preview</string>
 </resources>

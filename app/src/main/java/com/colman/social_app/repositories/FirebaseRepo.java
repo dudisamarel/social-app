@@ -94,7 +94,7 @@ public class FirebaseRepo {
 
     public void uploadImageToStorage(String imageName, Uri imageUri, OnCompleteListener<Uri> listener) {
         if (imageUri != null) {
-            StorageReference storageReference = firebaseStorage.getReference("photos");
+            StorageReference storageReference = firebaseStorage.getReference("media");
             final StorageReference imageRef = storageReference.child(imageName);
             UploadTask uploadTask = imageRef.putFile(imageUri);
             uploadTask.continueWithTask(task -> imageRef.getDownloadUrl()).addOnCompleteListener(listener);
