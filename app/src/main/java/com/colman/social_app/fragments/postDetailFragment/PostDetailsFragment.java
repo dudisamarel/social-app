@@ -65,7 +65,7 @@ public class PostDetailsFragment extends Fragment {
             postTitle.setText(post.getTitle());
             postContent.setText(post.getContent());
             String attachmentString = post.getAttachmentURI();
-            if (attachmentString != null) {
+            if (!attachmentString.isEmpty()) {
                 Uri attachmentUri = Uri.parse(attachmentString);
                 if (attachmentUri.toString().toLowerCase().contains("mp4")) {
                     setVideo(attachmentUri);
