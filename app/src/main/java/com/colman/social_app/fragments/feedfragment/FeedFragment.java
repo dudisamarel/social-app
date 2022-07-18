@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ public class FeedFragment extends Fragment {
     PostsFeedViewModel postsFeedViewModel;
     SwipeRefreshLayout swipeRefreshLayout;
     EditText searchbar;
+
+    Switch switchViewMyPosts;
 
 
     private SensorManager sensorManager;
@@ -90,7 +94,6 @@ public class FeedFragment extends Fragment {
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
 
 
-
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
         acceleration = 10f;
         accelerationCurrent = SensorManager.GRAVITY_EARTH;
@@ -100,6 +103,23 @@ public class FeedFragment extends Fragment {
             Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
+
+
+        switchViewMyPosts = view.findViewById(R.id.switchMyPosts);
+        switchViewMyPosts.setChecked(postsFeedViewModel.getViewCurrUserPosts());
+        if (postsFeedViewModel.getCurrUserEmail().equals("")) {
+            switchViewMyPosts.setVisibility(View.GONE);
+        }
+        switchViewMyPosts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                postsFeedViewModel.setViewCurrentUserPosts(isChecked);
+                searchbar.setText("");
+                postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
+                    feedAdapter.setData(posts);
+                });
+            }
+        });
+
 
         newPostFAB = view.findViewById(R.id.newPostFAB);
         newPostFAB.setOnClickListener(v -> {
@@ -139,7 +159,6 @@ public class FeedFragment extends Fragment {
         });
 
         searchbar = view.findViewById(R.id.search_bar);
-        Log.i("searchbar_text", String.valueOf(searchbar.getText().toString().equals("")));
 
         searchbar.addTextChangedListener(new TextWatcher() {
 

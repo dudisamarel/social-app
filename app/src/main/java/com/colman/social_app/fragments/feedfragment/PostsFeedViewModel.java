@@ -31,10 +31,30 @@ public class PostsFeedViewModel extends ViewModel {
         this.executor = Executors.newFixedThreadPool(2);
     }
 
+    public void setViewCurrentUserPosts(boolean viewCurrnetUserPost) {
+        executor.execute(() -> {
+            sharedPref.setViewCurrentUserPosts(viewCurrnetUserPost);
+        });
+    }
+
+    public boolean getViewCurrUserPosts() {
+        return sharedPref.getViewCurrentUserPosts();
+    }
+
+
     public LiveData<List<Post>> getAllPosts() {
+        if (sharedPref.getViewCurrentUserPosts()) {
+            return db.getPostDao().getAll(sharedPref.getCurrUserEmail());
+        }
+
         return db.getPostDao().getAll();
     }
+
     public LiveData<List<Post>> getFilteredPosts(String filter) {
+        if (sharedPref.getViewCurrentUserPosts()) {
+            return db.getPostDao().getAllWithFilter(filter, sharedPref.getCurrUserEmail());
+        }
+
         return db.getPostDao().getAllWithFilter(filter);
     }
 
@@ -43,8 +63,8 @@ public class PostsFeedViewModel extends ViewModel {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         ArrayList<Post> retrievedPosts = new ArrayList<Post>();
-                        for (QueryDocumentSnapshot doc:
-                             task.getResult()) {
+                        for (QueryDocumentSnapshot doc :
+                                task.getResult()) {
                             retrievedPosts.add(Post.fromMap(doc));
                         }
 
