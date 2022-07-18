@@ -3,6 +3,7 @@ package com.colman.social_app.fragments.newPostFragment;
 import static android.app.Activity.RESULT_OK;
 import static com.colman.social_app.constants.Constants.PICK_MEDIA_REQUEST_CODE;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
@@ -50,9 +52,8 @@ public class AddPostFragment extends Fragment {
     private Uri attachmentUriToPost;
     private EditText postTitle;
     private EditText postContent;
-    private VideoView attachmentVV;
-    private ImageView attachmentIV;
     private String mediaName;
+    private ImageView attachmentIV;
 
     public AddPostFragment() {
         // Required empty public constructor
@@ -85,8 +86,8 @@ public class AddPostFragment extends Fragment {
         deleteButton = view.findViewById(R.id.delete_button);
         postTitle = view.findViewById(R.id.postTitle);
         postContent = view.findViewById(R.id.postContent);
-        attachmentVV = view.findViewById(R.id.attachmentVV);
         attachmentIV = view.findViewById(R.id.attachmentIV);
+
         view.findViewById(R.id.addAAttachmentButton).setOnClickListener(v -> {
             ImageUtils.selectImageOrVideo(this.getContext());
         });
@@ -95,6 +96,11 @@ public class AddPostFragment extends Fragment {
         if (postID.equals("")) {
             deleteButton.setVisibility(View.GONE);
             saveButton.setOnClickListener(v -> {
+                ProgressDialog dialog = new ProgressDialog(this.getContext());
+                dialog.setMessage("Loading Image");
+                dialog.setCancelable(false);
+                dialog.setInverseBackgroundForced(false);
+                dialog.show();
                 newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
                     if (task.isSuccessful()) {
                         Post savedPost = new Post(
@@ -105,8 +111,10 @@ public class AddPostFragment extends Fragment {
                                 newPostViewModel.getCurrUserEmail()
                         );
                         newPostViewModel.savePost(savedPost);
+                        dialog.dismiss();
                         Toast.makeText(this.getContext(), "Attachment uploaded", Toast.LENGTH_SHORT).show();
                     } else {
+                        dialog.dismiss();
                         Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -119,14 +127,6 @@ public class AddPostFragment extends Fragment {
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());
                 attachmentUriToPost = Uri.parse(post.getAttachmentURI());
-                if (attachmentUriToPost != null) {
-                    if (attachmentUriToPost.toString().toLowerCase().contains("mp4")) {
-                        setVideo();
-                    } else {
-                        setImage();
-                    }
-                }
-
                 saveButton.setOnClickListener(v -> {
                     Post savedPost = new Post(
                             postID,
@@ -140,7 +140,7 @@ public class AddPostFragment extends Fragment {
                     Navigation.findNavController(v)
                             .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
                 });
-
+                Glide.with(this.getContext()).load(attachmentUriToPost).into(attachmentIV);
                 deleteButton.setOnClickListener(v -> {
                     Post deletedPost = new Post(
                             postID,
@@ -169,31 +169,9 @@ public class AddPostFragment extends Fragment {
             attachmentUriToPost = data.getData();
             String type = getActivity().getContentResolver().getType(attachmentUriToPost);
             mediaName = UUID.randomUUID().toString() + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(type);
-            if (type.toLowerCase().contains("video")) {
-                setVideo();
-            } else {
-                setImage();
-            }
+            Glide.with(this.getContext()).load(attachmentUriToPost).into(attachmentIV);
         }
     }
 
-    private void setImage() {
-        attachmentVV.setVisibility(View.GONE);
-        attachmentIV.setVisibility(View.VISIBLE);
-        Picasso.get().load(attachmentUriToPost).into(attachmentIV);
-    }
 
-    private void setVideo() {
-        attachmentVV.setVideoURI(attachmentUriToPost);
-        MediaController mediaController = new MediaController(this.getContext());
-        mediaController.setMediaPlayer(attachmentVV);
-        mediaController.setAnchorView(attachmentVV);
-        attachmentVV.setVisibility(View.VISIBLE);
-        attachmentVV.setMediaController(mediaController);
-        attachmentVV.setOnPreparedListener(mp -> {
-            mp.start();
-            attachmentIV.setVisibility(View.GONE);
-            mediaController.show(2000);
-        });
-    }
 }

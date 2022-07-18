@@ -1,184 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	tools:context=".fragments.newPostFragment.AddPostFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.newPostFragment.AddPostFragment">
 
-	<LinearLayout
-		android:id="@+id/linearLayout"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:layout_marginHorizontal="40dp"
-		android:layout_marginTop="10dp"
-		android:gravity="center"
-		android:orientation="horizontal"
-		android:weightSum="3"
-		app:layout_constraintTop_toTopOf="parent"
-		tools:layout_editor_absoluteX="40dp">
-
-
-		<Button
-			android:id="@+id/delete_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="40dp"
-			android:layout_marginBottom="16dp"
-			android:layout_weight="1"
-			android:backgroundTint="@color/dialog_red"
-			android:text="@string/delete"
-			android:textAllCaps="false"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toEndOf="@id/save_button" />
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="40dp">
 
 
-		<Button
-			android:id="@+id/save_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:layout_marginBottom="16dp"
-			android:layout_weight="1"
-			android:backgroundTint="@color/dialog_green"
-			android:gravity="center"
-			android:text="@string/save"
-			android:textAllCaps="false"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toStartOf="@id/delete_button"
-			app:layout_constraintStart_toStartOf="parent" />
-
-	</LinearLayout>
-
-	<TextView
-		android:id="@+id/addPostTitle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="16dp"
-		android:background="@drawable/stroke"
-		android:fontFamily="@font/poppins"
-		android:text="Post"
-		android:textAlignment="center"
-		android:textColor="@color/black"
-		android:textSize="32sp"
-		app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-		app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-		tools:layout_editor_absoluteX="16dp" />
-
-	<LinearLayout
-		android:id="@+id/linearLayout2"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		app:layout_constraintBottom_toBottomOf="parent">
-		<!-- TODO: Update blank fragment layout -->
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/dialog_red"
+            android:text="@string/delete"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/save_button" />
 
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="20dp"
-			android:orientation="vertical">
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/dialog_green"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete_button"
+            app:layout_constraintStart_toStartOf="parent" />
 
-			<TextView
-				android:id="@+id/postTitleLabel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:fontFamily="@font/poppins"
-				android:text="@string/title"
-				android:textColor="@color/black"
-				android:textSize="24sp"
-				app:layout_constraintBaseline_toBaselineOf="@id/postTitle"
-				app:layout_constraintStart_toStartOf="parent" />
-
-			<EditText
-				android:id="@+id/postTitle"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="16dp"
-				android:background="@drawable/stroke"
-				android:maxLines="1"
-				android:padding="5dp"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toEndOf="@id/postTitleLabel"
-				app:layout_constraintTop_toBottomOf="@id/addPostTitle" />
-		</LinearLayout>
-
-		<LinearLayout
-
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginHorizontal="20dp"
-			android:orientation="vertical">
-
-			<TextView
-				android:id="@+id/postContentLabel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:fontFamily="@font/poppins"
-				android:text="@string/content"
-				android:textColor="@color/black"
-				android:textSize="24sp"
-				app:layout_constraintBaseline_toBaselineOf="@id/postContent"
-				app:layout_constraintStart_toStartOf="parent" />
-
-			<EditText
-				android:id="@+id/postContent"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="16dp"
-				android:background="@drawable/stroke"
-				android:gravity="start"
-				android:maxLines="3"
-				android:minLines="3"
-				android:padding="5dp" />
-
-			<Button
-				android:id="@+id/addAAttachmentButton"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:backgroundTint="@color/main_button"
-				android:text="@string/add_attachment"
-				android:textAllCaps="false" />
+    </LinearLayout>
 
 
-		</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <!-- TODO: Update blank fragment layout -->
+
+        <TextView
+            android:id="@+id/addPostTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/stroke"
+            android:fontFamily="@font/poppins"
+            android:text="Post"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/postTitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins"
+                android:text="@string/title"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/postTitle"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/postTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/stroke"
+                android:maxLines="1"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/postTitleLabel"
+                app:layout_constraintTop_toBottomOf="@id/addPostTitle" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/postContentLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins"
+                android:text="@string/content"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/postContent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/postContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/stroke"
+                android:gravity="start"
+                android:maxLines="3"
+                android:minLines="3"
+                android:padding="5dp" />
+
+            <Button
+                android:id="@+id/addAAttachmentButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/main_button"
+                android:text="@string/add_attachment"
+                android:textAllCaps="false" />
 
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center"
-			android:orientation="vertical">
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:text="@string/attachment_preview" />
-
-			<VideoView
-				android:id="@+id/attachmentVV"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:visibility="gone" />
+        </LinearLayout>
 
 
-			<ImageView
-				android:id="@+id/attachmentIV"
-				android:layout_width="match_parent"
-				android:layout_height="200dp"
-				android:background="@color/avatar_background"
-				android:scaleType="centerCrop"
-				android:visibility="visible"
-				app:layout_constraintBottom_toBottomOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
-		</LinearLayout>
-	</LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/attachment_preview" />
+
+
+
+
+            <ImageView
+                android:id="@+id/attachmentIV"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/avatar_background"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
