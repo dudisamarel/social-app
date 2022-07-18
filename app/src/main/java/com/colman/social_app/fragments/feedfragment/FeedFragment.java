@@ -59,7 +59,6 @@ public class FeedFragment extends Fragment {
             accelerationCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
             float delta = accelerationCurrent - accelerationLast;
             acceleration = acceleration * 0.9f + delta;
-            Log.d("TAG", "onSensorChanged: " + acceleration);
             if (acceleration > MINIMAL_ACCELERATION) {
                 Toast.makeText(getActivity(), "Shake event detected", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
@@ -91,13 +90,16 @@ public class FeedFragment extends Fragment {
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
 
 
+
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
-        Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
         acceleration = 10f;
         accelerationCurrent = SensorManager.GRAVITY_EARTH;
         accelerationLast = SensorManager.GRAVITY_EARTH;
 
+        if (postsFeedViewModel.getEnableShaking()) {
+            Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
 
         newPostFAB = view.findViewById(R.id.newPostFAB);
         newPostFAB.setOnClickListener(v -> {
@@ -166,14 +168,19 @@ public class FeedFragment extends Fragment {
 
     @Override
     public void onPause() {
-        sensorManager.unregisterListener(sensorListener);
+        if (postsFeedViewModel.getEnableShaking()) {
+            sensorManager.unregisterListener(sensorListener);
+        }
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
+        if (postsFeedViewModel.getEnableShaking()) {
+            sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+
         super.onResume();
     }
 }
