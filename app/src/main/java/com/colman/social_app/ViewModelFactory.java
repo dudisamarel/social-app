@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.colman.social_app.fragments.SettingsFragment.SettingsFragmentViewModel;
 import com.colman.social_app.fragments.UserProfileFragment.UserProfile;
 import com.colman.social_app.fragments.UserProfileFragment.UserProfileViewModel;
 import com.colman.social_app.fragments.feedfragment.PostsFeedViewModel;
@@ -45,6 +46,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new MainActivityViewModel(firebaseRepo);
         } else if (modelClass.equals(PostDetailsViewModel.class)) {
             return (T) new PostDetailsViewModel(db);
+        } else if (modelClass.equals(SettingsFragmentViewModel.class)) {
+            return (T) new SettingsFragmentViewModel(sharedPref);
         }
         throw new InvalidParameterException();
     }
