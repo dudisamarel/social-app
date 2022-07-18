@@ -8,6 +8,14 @@
 	android:orientation="vertical"
 	tools:context="com.colman.social_app.fragments.UserProfileFragment.UserProfile">
 
+	<ImageButton
+		android:id="@+id/settingButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right"
+		android:background="@mipmap/ic_settings_white_background"
+		/>
+
 
 	<com.google.android.material.imageview.ShapeableImageView
 		android:id="@+id/profileIV"

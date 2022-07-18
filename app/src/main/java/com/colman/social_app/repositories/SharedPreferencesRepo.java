@@ -31,6 +31,14 @@ public class SharedPreferencesRepo {
         return sharedPreferences.getLong("last_sync", 0);
     }
 
+    public void setEnableShaking(boolean enableShaking) {
+        sharedPreferences.edit().putBoolean("enable_shaking", enableShaking).apply();
+    }
+
+    public boolean getEnableShaking() {
+        return sharedPreferences.getBoolean("enable_shaking", true);
+    }
+
     public boolean getViewCurrentUserPosts() {
         return sharedPreferences.getBoolean("view_user_posts", false);
     }

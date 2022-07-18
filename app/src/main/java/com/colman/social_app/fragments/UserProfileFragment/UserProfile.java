@@ -15,17 +15,22 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.fragments.newPostFragment.AddPostFragmentDirections;
 import com.colman.social_app.services.utils.DialogUtils;
 import com.colman.social_app.services.utils.ImageUtils;
 import com.colman.social_app.views.activities.Login;
@@ -43,7 +48,7 @@ public class UserProfile extends Fragment {
     FirebaseUser user;
     TextView emailTV;
     TextView fullNameTV;
-
+    ImageButton settingButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewModelFactory factory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
@@ -73,6 +78,17 @@ public class UserProfile extends Fragment {
             startActivity(intent);
         });
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        settingButton = view.findViewById(R.id.settingButton);
+        settingButton.setOnClickListener(v -> {
+            Navigation.findNavController(v)
+                    .navigate(UserProfileDirections.actionUserProfileToSettingsFragment());
+        });
     }
 
     private void onClickEditName(View view) {

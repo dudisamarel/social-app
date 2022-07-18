@@ -81,6 +81,10 @@ public class PostsFeedViewModel extends ViewModel {
         return sharedPref.getCurrUserEmail();
     }
 
+    public boolean getEnableShaking() {
+        return sharedPref.getEnableShaking();
+    }
+
 
     @Override
     protected void onCleared() {
