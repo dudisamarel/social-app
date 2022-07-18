@@ -13,6 +13,9 @@
             android:id="@+id/action_userProfile_to_feedFragment"
             app:destination="@id/feedFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_userProfile_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/feedFragment"
@@ -53,4 +56,9 @@
             android:name="postID"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.colman.social_app.fragments.SettingsFragment.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

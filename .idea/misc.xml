@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_add_post.xml" value="0.19157608695652173" />
         <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_feed.xml" value="0.152" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_settings.xml" value="0.2453125" />
         <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_user_profile.xml" value="0.13645833333333332" />
         <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/post_list_item.xml" value="0.1" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/xml/root_preferences.xml" value="0.2453125" />
       </map>
     </option>
   </component>

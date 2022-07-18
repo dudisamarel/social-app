@@ -48,4 +48,6 @@
     <string name="logout">Logout</string>
     <string name="post_title_label">Title:</string>
     <string name="post_title_placeholder">POST-TITLE</string>
+    <string name="post_page_title">Post</string>
+    <string name="settings_page_title">Settings</string>
 </resources>

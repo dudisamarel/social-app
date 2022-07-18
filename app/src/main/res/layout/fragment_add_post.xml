@@ -15,7 +15,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/stroke"
         android:fontFamily="@font/poppins"
-        android:text="Post"
+        android:text="@string/post_page_title"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="32sp"
