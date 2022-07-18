@@ -3,6 +3,7 @@ package com.colman.social_app.fragments.newPostFragment;
 import static android.app.Activity.RESULT_OK;
 import static com.colman.social_app.constants.Constants.PICK_MEDIA_REQUEST_CODE;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -73,6 +74,7 @@ public class AddPostFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_add_post, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,7 +99,7 @@ public class AddPostFragment extends Fragment {
             deleteButton.setVisibility(View.GONE);
             saveButton.setOnClickListener(v -> {
                 ProgressDialog dialog = new ProgressDialog(this.getContext());
-                dialog.setMessage("Loading Image");
+                dialog.setMessage("Loading");
                 dialog.setCancelable(false);
                 dialog.setInverseBackgroundForced(false);
                 dialog.show();
@@ -112,21 +114,25 @@ public class AddPostFragment extends Fragment {
                         );
                         newPostViewModel.savePost(savedPost);
                         dialog.dismiss();
+                        Navigation.findNavController(v)
+                                .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
                         Toast.makeText(this.getContext(), "Attachment uploaded", Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.dismiss();
+                        Navigation.findNavController(v)
+                                .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
                         Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                Navigation.findNavController(v)
-                        .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
             });
         } else {
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());
-                attachmentUriToPost = Uri.parse(post.getAttachmentURI());
+                if (attachmentIV != null) {
+                    attachmentUriToPost = Uri.parse(post.getAttachmentURI());
+                    Glide.with(this).load(attachmentUriToPost).into(attachmentIV);
+                }
                 saveButton.setOnClickListener(v -> {
                     Post savedPost = new Post(
                             postID,
@@ -140,7 +146,7 @@ public class AddPostFragment extends Fragment {
                     Navigation.findNavController(v)
                             .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
                 });
-                Glide.with(this.getContext()).load(attachmentUriToPost).into(attachmentIV);
+                deleteButton.setText(R.string.delete);
                 deleteButton.setOnClickListener(v -> {
                     Post deletedPost = new Post(
                             postID,
