@@ -92,9 +92,10 @@ public class PostDetailsFragment extends Fragment {
         attachmentVV.setVisibility(View.VISIBLE);
         attachmentVV.setMediaController(mediaController);
         attachmentVV.setOnPreparedListener(mp -> {
-            mp.start();
             attachmentIV.setVisibility(View.GONE);
-            mediaController.show(2000);
+            mediaController.show();
+            attachmentVV.start();
         });
     }
+
 }

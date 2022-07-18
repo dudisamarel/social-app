@@ -53,10 +53,12 @@
         android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars" />
 
+
     <VideoView
         android:id="@+id/attachmentVV"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center" />
+
 
 </LinearLayout>

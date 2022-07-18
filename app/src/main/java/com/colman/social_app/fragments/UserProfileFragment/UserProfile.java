@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
@@ -31,7 +32,6 @@ import com.colman.social_app.services.utils.ImageUtils;
 import com.colman.social_app.views.activities.Login;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -55,7 +55,7 @@ public class UserProfile extends Fragment {
             fullNameTV = v.findViewById(R.id.full_nameTV);
             emailTV.setText(user.getEmail());
             fullNameTV.setText(user.getDisplayName());
-            Picasso.get().load(user.getPhotoUrl()).into(profileIV);
+            Glide.with(this).load(user.getPhotoUrl()).into(profileIV);
         } else {
             Intent intent = new Intent(v.getContext(), Login.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

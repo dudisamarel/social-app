@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -33,7 +34,6 @@ import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
 import com.colman.social_app.entities.Post;
 import com.colman.social_app.services.utils.ImageUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -55,6 +55,7 @@ public class AddPostFragment extends Fragment {
     private EditText postContent;
     private String mediaName;
     private ImageView attachmentIV;
+    private TextView addPostTitle;
 
     public AddPostFragment() {
         // Required empty public constructor
@@ -83,7 +84,7 @@ public class AddPostFragment extends Fragment {
 
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         newPostViewModel = new ViewModelProvider(this, viewModelFactory).get(NewPostViewModel.class);
-
+        addPostTitle = view.findViewById(R.id.addPostTitle);
         saveButton = view.findViewById(R.id.save_button);
         deleteButton = view.findViewById(R.id.delete_button);
         postTitle = view.findViewById(R.id.postTitle);
@@ -96,6 +97,7 @@ public class AddPostFragment extends Fragment {
 
         // new post - no getting post details is needed
         if (postID.equals("")) {
+            addPostTitle.setText("Add Post");
             deleteButton.setVisibility(View.GONE);
             saveButton.setOnClickListener(v -> {
                 ProgressDialog dialog = new ProgressDialog(this.getContext());
@@ -126,6 +128,7 @@ public class AddPostFragment extends Fragment {
                 });
             });
         } else {
+            addPostTitle.setText("Edit Post");
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());

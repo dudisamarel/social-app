@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.colman.social_app.R;
 import com.colman.social_app.entities.Post;
-import com.squareup.picasso.Picasso;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
     Post currPost;
