@@ -85,6 +85,9 @@ public class PostsFeedViewModel extends ViewModel {
         return sharedPref.getEnableShaking();
     }
 
+    public LiveData<List<String>> getAllUsernames() {
+            return db.getPostDao().getALlUsernames();
+    }
 
     @Override
     protected void onCleared() {

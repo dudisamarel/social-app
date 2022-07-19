@@ -10,6 +10,7 @@ import androidx.room.Query;
 
 import com.colman.social_app.entities.Post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -47,7 +48,7 @@ public interface PostDao {
     void delete(String id);
 
     @Query("SELECT DISTINCT uploaderEmail FROM POSTS WHERE isDeleted = 0 ORDER BY edited DESC")
-    void getALlUsernames();
+    LiveData<List<String>> getALlUsernames();
 
 
 }

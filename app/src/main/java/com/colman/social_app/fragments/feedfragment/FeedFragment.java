@@ -33,6 +33,7 @@ import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -94,6 +95,10 @@ public class FeedFragment extends Fragment {
 
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
+
+        postsFeedViewModel.getAllUsernames().observe(getViewLifecycleOwner(), usernames -> {
+
+        });
 
         TextView toggleTV = view.findViewById(R.id.toggle_text);
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
