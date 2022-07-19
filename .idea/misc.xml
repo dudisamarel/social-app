@@ -3,15 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout-w840dp/fragment_feed.xml" value="0.1" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/dialog_profile_name.xml" value="0.2453125" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_add_post.xml" value="0.19157608695652173" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_feed.xml" value="0.152" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_settings.xml" value="0.2453125" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_user_profile.xml" value="0.13645833333333332" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/post_list_item.xml" value="0.1" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/username_list_item.xml" value="0.1375" />
-        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/xml/root_preferences.xml" value="0.2453125" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2095" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/circle.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/circle_img.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.168" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/drawable/input_bg.xml" value="0.168" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_main.xml" value="0.49728260869565216" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_register.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/menu/menu_main.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/avatar.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/avatar_round.xml" value="0.2" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2" />
+        <entry key="app/src/main/res/layout-w840dp/fragment_feed.xml" value="0.11953125" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_profile_name.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/dialog_profile_password.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/edit_profile_field.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/fragment_add_post.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_post_details.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/post_list_item.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/username_list_item.xml" value="0.159375" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/avatar.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/avatar_round.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -20,12 +40,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.152" />
-      </ProjectState>
-    </option>
   </component>
 </project>

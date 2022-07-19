@@ -15,37 +15,36 @@ import java.util.List;
 public class UsernameAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
-private final PostViewHolder.ViewHolderOnClickListener clickListener;
-private List<Post> data=null;
+    private final PostViewHolder.ViewHolderOnClickListener clickListener;
+    private List<Post> data = null;
 
-public PostsFeedAdapter(PostViewHolder.ViewHolderOnClickListener clickListener){
-        this.clickListener=clickListener;
-        }
+    public UsernameAdapter(PostViewHolder.ViewHolderOnClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
-@NonNull
-@Override
-public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent,int viewType){
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.post_list_item,parent,false);
-        return new PostViewHolder(parent.getContext(),view,clickListener);
-        }
 
-@Override
-public void onBindViewHolder(@NonNull PostViewHolder holder,int position){
+    @NonNull
+    @Override
+    public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.username_list_item, parent, false);
+        return new PostViewHolder(parent.getContext(), view, clickListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         holder.bind(data.get(position));
-        }
+    }
 
-@Override
-public int getItemCount(){
-        if(data!=null)
-        return data.size();
+    @Override
+    public int getItemCount() {
+        if (data != null)
+            return data.size();
 
         return 0;
-        }
+    }
 
-public void setData(List<Post> newData){
-        data=newData;
+    public void setData(List<Post> newData) {
+        data = newData;
         notifyDataSetChanged();
-        }
-        }
-
-        }
+    }
+}
