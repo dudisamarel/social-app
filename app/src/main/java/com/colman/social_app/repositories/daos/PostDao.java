@@ -46,8 +46,4 @@ public interface PostDao {
     @Query("UPDATE posts SET isDeleted = 1 WHERE id = :id")
     void delete(String id);
 
-    @Query("SELECT DISTINCT uploaderEmail FROM POSTS WHERE isDeleted = 0 ORDER BY edited DESC")
-    void getALlUsernames();
-
-
 }
