@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,6 +33,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.entities.Post;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
@@ -44,7 +47,6 @@ public class FeedFragment extends Fragment {
     PostsFeedViewModel postsFeedViewModel;
     SwipeRefreshLayout swipeRefreshLayout;
     EditText searchbar;
-
     SwitchCompat switchViewMyPosts;
 
 
@@ -87,14 +89,16 @@ public class FeedFragment extends Fragment {
 
     }
 
+    public interface SelectionListener {
+        void clickListener(View itemView, Post post, boolean showDetails);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
-
+//        View fragment_preview = view.findViewById(R.id.fragment_preview);
         TextView toggleTV = view.findViewById(R.id.toggle_text);
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
         acceleration = 10f;
@@ -105,7 +109,6 @@ public class FeedFragment extends Fragment {
             Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
-
 
         switchViewMyPosts = view.findViewById(R.id.switchMyPosts);
         switchViewMyPosts.setChecked(postsFeedViewModel.getViewCurrUserPosts());
@@ -132,56 +135,55 @@ public class FeedFragment extends Fragment {
             Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
         });
 
-
         postFeed = view.findViewById(R.id.post_feed_recyclerView);
-        feedAdapter = new PostsFeedAdapter((itemView, post) -> {
-
-            // if clicked post belong to curr user
-            if (post.getUploaderEmail().equals(postsFeedViewModel.getCurrUserEmail())) {
-                Navigation.findNavController(itemView).navigate(
-                        FeedFragmentDirections.actionFeedFragmentToAddPostFragment(post.getId())
-                );
-            } else { // if clicked post belong to other user
-                Navigation.findNavController(itemView).navigate(
-                        FeedFragmentDirections.actionFeedFragmentToPostDetailsFragment(post.getId())
-                );
-            }
-            Log.i("POST_CLICK", post.getTitle());
-        });
-
-
+        feedAdapter = new PostsFeedAdapter((item, post) -> ((SelectionListener) getActivity()).clickListener(item, post, post.getUploaderEmail().equals(postsFeedViewModel.getCurrUserEmail())));
         // TODO: INITIATE THE REFRESH FUNCTION
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
+        swipeRefreshLayout.setOnRefreshListener(() ->
+        {
             swipeRefreshLayout.setRefreshing(false);
             postsFeedViewModel.refreshFromRemote();
         });
-
-        postFeed.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        if (isTablet) {
+            postFeed.setLayoutManager(new
+                    GridLayoutManager(this.getContext(), 1));
+        }else{
+            postFeed.setLayoutManager(new
+                    GridLayoutManager(this.getContext(), 2));
+        }
         postFeed.setAdapter(feedAdapter);
 
-        postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
-            feedAdapter.setData(posts);
-        });
+
+
+        postsFeedViewModel.getAllPosts().
+
+                observe(getViewLifecycleOwner(), posts ->
+
+                {
+                    feedAdapter.setData(posts);
+                });
 
         searchbar = view.findViewById(R.id.search_bar);
 
-        searchbar.addTextChangedListener(new TextWatcher() {
+        searchbar.addTextChangedListener(new
 
-            public void afterTextChanged(Editable s) {
-            }
+                                                 TextWatcher() {
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
+                                                     public void afterTextChanged(Editable s) {
+                                                     }
 
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                postsFeedViewModel.getFilteredPosts(s.toString()).observe(getViewLifecycleOwner(), posts -> {
-                    feedAdapter.setData(posts);
-                });
-            }
-        });
+                                                     public void beforeTextChanged(CharSequence s, int start,
+                                                                                   int count, int after) {
+                                                     }
+
+                                                     public void onTextChanged(CharSequence s, int start,
+                                                                               int before, int count) {
+                                                         postsFeedViewModel.getFilteredPosts(s.toString()).observe(getViewLifecycleOwner(), posts -> {
+                                                             feedAdapter.setData(posts);
+                                                         });
+                                                     }
+                                                 });
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.entities.Post;
 import com.colman.social_app.fragments.feedfragment.PostsFeedViewModel;
 import com.colman.social_app.fragments.newPostFragment.AddPostFragmentArgs;
 import com.colman.social_app.fragments.newPostFragment.NewPostViewModel;
@@ -54,14 +55,40 @@ public class PostDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.postID = AddPostFragmentArgs.fromBundle(getArguments()).getPostID();
         attachmentVV = view.findViewById(R.id.attachmentVV);
         attachmentIV = view.findViewById(R.id.attachmentIV);
-        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
-        postDetailsViewModel = new ViewModelProvider(this, viewModelFactory).get(PostDetailsViewModel.class);
         postTitle = view.findViewById(R.id.postDetailTitle);
         postContent = view.findViewById(R.id.postDetailContent);
-        postDetailsViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
+        if (getArguments() != null) {
+            setPostData(AddPostFragmentArgs.fromBundle(getArguments()).getPostID());
+        }
+    }
+
+    public void setPostData(Post post) {
+        attachmentVV.setVisibility(View.GONE);
+        attachmentIV.setVisibility(View.GONE);
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        postDetailsViewModel = new ViewModelProvider(this, viewModelFactory).get(PostDetailsViewModel.class);
+        postTitle.setText(post.getTitle());
+        postContent.setText(post.getContent());
+        String attachmentString = post.getAttachmentURI();
+        if (!attachmentString.isEmpty()) {
+            Uri attachmentUri = Uri.parse(attachmentString);
+            if (attachmentUri.toString().toLowerCase().contains("mp4")) {
+                setVideo(attachmentUri);
+            } else {
+                setImage(attachmentUri);
+            }
+        }
+    }
+
+
+    public void setPostData(String postId) {
+        attachmentVV.setVisibility(View.GONE);
+        attachmentIV.setVisibility(View.GONE);
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        postDetailsViewModel = new ViewModelProvider(this, viewModelFactory).get(PostDetailsViewModel.class);
+        postDetailsViewModel.getPostByID(postId).observe(getViewLifecycleOwner(), post -> {
             postTitle.setText(post.getTitle());
             postContent.setText(post.getContent());
             String attachmentString = post.getAttachmentURI();
@@ -74,12 +101,10 @@ public class PostDetailsFragment extends Fragment {
                 }
             }
         });
-
-
     }
 
+
     private void setImage(Uri uri) {
-        attachmentVV.setVisibility(View.GONE);
         attachmentIV.setVisibility(View.VISIBLE);
         Glide.with(getContext()).load(uri).into(attachmentIV);
     }
@@ -92,7 +117,6 @@ public class PostDetailsFragment extends Fragment {
         attachmentVV.setVisibility(View.VISIBLE);
         attachmentVV.setMediaController(mediaController);
         attachmentVV.setOnPreparedListener(mp -> {
-            attachmentIV.setVisibility(View.GONE);
             mediaController.show();
             attachmentVV.start();
         });

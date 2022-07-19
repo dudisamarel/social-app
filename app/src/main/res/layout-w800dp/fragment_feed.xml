@@ -39,12 +39,9 @@
                     android:fontFamily="@font/poppins"
                     android:text="@string/toggle_to_only_view_your_posts"
                     android:textColor="@color/black"
+                    android:layout_marginRight="10dp"
                     android:textStyle="bold" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchMyPosts"
@@ -77,9 +74,9 @@
         android:id="@+id/newPostFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tint="@android:color/white"
         android:layout_margin="16dp"
         android:backgroundTint="@color/main_button"
+        app:tint="@android:color/white"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

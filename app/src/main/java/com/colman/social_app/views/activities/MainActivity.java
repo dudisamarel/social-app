@@ -2,22 +2,32 @@ package com.colman.social_app.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.entities.Post;
+import com.colman.social_app.fragments.feedfragment.FeedFragment;
+import com.colman.social_app.fragments.feedfragment.FeedFragmentDirections;
+import com.colman.social_app.fragments.postDetailFragment.PostDetailsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FeedFragment.SelectionListener {
     BottomNavigationView bottomNavigationView;
     NavController navController;
     MainActivityViewModel viewModel;
+    PostDetailsFragment detailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         setContentView(R.layout.activity_main);
+        detailsFragment = (PostDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_preview);
         initNavigation();
         initNavBar();
 
@@ -50,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 
+
     protected void initNavBar() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -64,6 +76,26 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+    }
+
+
+    @Override
+    public void clickListener(View itemView, Post post, boolean showDetails) {
+        // if clicked post belong to curr user
+        if (detailsFragment == null) {
+            if (showDetails) {
+                Navigation.findNavController(itemView).navigate(
+                        FeedFragmentDirections.actionFeedFragmentToAddPostFragment(post.getId())
+                );
+            } else { // if clicked post belong to other user
+                Navigation.findNavController(itemView).navigate(
+                        FeedFragmentDirections.actionFeedFragmentToPostDetailsFragment(post.getId())
+                );
+            }
+        } else {
+            detailsFragment.setPostData(post);
+        }
+        Log.i("POST_CLICK", post.getTitle());
     }
 
 

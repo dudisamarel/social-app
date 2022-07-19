@@ -21,6 +21,7 @@ import com.colman.social_app.entities.Post;
 public class PostViewHolder extends RecyclerView.ViewHolder {
     Post currPost;
     ImageView postIV;
+    TextView postTV;
     Context context;
 
     public interface ViewHolderOnClickListener {
@@ -31,6 +32,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.context = context;
         postIV = itemView.findViewById(R.id.postIV);
+        postTV = itemView.findViewById(R.id.postTV);
+
         itemView.setOnClickListener(v -> {
             clickListener.onclick(v, currPost);
             //Log.i("ITEM_CLICK", title.getText().toString() + "was clicked");
@@ -39,7 +42,9 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Post post) {
         currPost = post;
-        if (!post.getAttachmentURI().isEmpty())
+        if (postTV != null)
+            postTV.setText(post.getTitle());
+        if (postIV != null && !post.getAttachmentURI().isEmpty())
             Glide.with(context).load(post.getAttachmentURI()).into(postIV);
     }
 }
