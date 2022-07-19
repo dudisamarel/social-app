@@ -58,4 +58,10 @@
     <string name="toggle_to_only_view_your_posts">Toggle to only view your posts</string>
     <string name="toggle_text_all">Toggle to see all posts</string>
     <string name="toggle_text_only_user">Toggle to only view your posts</string>
+    <string name="skip">Skip</string>
+    <string name="finishedIntro">Finish</string>
+    <string name="desc">Desc</string>
+    <string name="need_help">Need help?</string>
+    <string name="click_here">Click Here!</string>
+    <string name="addpost">Add Post</string>
 </resources>

@@ -51,19 +51,25 @@
         <activity
             android:name="com.colman.social_app.views.activities.Login"
             android:exported="true"
-            android:theme="@style/Theme.Socialapp.NoActionBar" >
+            android:theme="@style/Theme.Socialapp.NoActionBar">
 
         </activity>
         <activity
-            android:name="com.colman.social_app.views.activities.MainActivity"
+            android:name=".intro.IntroActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Socialapp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.colman.social_app.views.activities.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Socialapp.NoActionBar">
+
         </activity>
     </application>
 

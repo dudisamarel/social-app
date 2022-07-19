@@ -44,7 +44,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         currPost = post;
         if (postTV != null)
             postTV.setText(post.getTitle());
-        if (postIV != null && !post.getAttachmentURI().isEmpty())
+        if (postIV != null && post.getAttachmentURI() != null && !post.getAttachmentURI().isEmpty())
             Glide.with(context).load(post.getAttachmentURI()).into(postIV);
     }
 }

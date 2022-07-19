@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.colman.social_app.R;
 import com.colman.social_app.SocialApplication;
 import com.colman.social_app.ViewModelFactory;
+import com.colman.social_app.intro.IntroActivity;
 import com.colman.social_app.services.utils.ImageUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -41,6 +42,7 @@ public class Register extends AppCompatActivity {
     Uri imageUri;
     ImageView profileIV;
     RegisterViewModel viewModel;
+    TextView introButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,12 @@ public class Register extends AppCompatActivity {
         signInTV.setOnClickListener(v -> {
             startActivity(new Intent(this, Login.class));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
+        introButton = findViewById(R.id.introButton);
+        introButton.setOnClickListener(v -> {
+            Intent playIntent = new Intent(this, IntroActivity.class);
+            playIntent.putExtra("isFromMenu", true);
+            startActivity(playIntent);
         });
         Button selectImageButton = findViewById(R.id.selectImageBtn);
         selectImageButton.setOnClickListener(v -> {
