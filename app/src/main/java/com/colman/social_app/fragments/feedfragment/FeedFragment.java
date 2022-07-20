@@ -55,6 +55,7 @@ public class FeedFragment extends Fragment {
     private float accelerationCurrent;
     private float accelerationLast;
     private final float MINIMAL_ACCELERATION = 12;
+
     final SensorEventListener sensorListener = new SensorEventListener() {
 
         // calculates if device movement is bigger than a decided value, if so - enters to new post fragment
@@ -68,7 +69,7 @@ public class FeedFragment extends Fragment {
             float delta = accelerationCurrent - accelerationLast;
             acceleration = acceleration * 0.9f + delta;
             if (acceleration > MINIMAL_ACCELERATION) {
-                Toast.makeText(getActivity(), "Shaking to a new post!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.shaking_message, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
             }
         }
@@ -82,13 +83,6 @@ public class FeedFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
     public interface SelectionListener {
         void clickListener(View itemView, Post post, boolean showDetails);
     }
@@ -99,7 +93,6 @@ public class FeedFragment extends Fragment {
         ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
         postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
 //        View fragment_preview = view.findViewById(R.id.fragment_preview);
-        TextView toggleTV = view.findViewById(R.id.toggle_text);
         sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
         acceleration = 10f;
         accelerationCurrent = SensorManager.GRAVITY_EARTH;
@@ -115,29 +108,11 @@ public class FeedFragment extends Fragment {
         if (postsFeedViewModel.getCurrUserEmail().equals("")) {
             switchViewMyPosts.setVisibility(View.GONE);
         }
-        switchViewMyPosts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    toggleTV.setText(R.string.toggle_text_all);
-                else
-                    toggleTV.setText(R.string.toggle_text_only_user);
-                postsFeedViewModel.setViewCurrentUserPosts(isChecked);
-                searchbar.setText("");
-                postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
-                    feedAdapter.setData(posts);
-                });
-            }
-        });
-
-
-        newPostFAB = view.findViewById(R.id.newPostFAB);
-        newPostFAB.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
-        });
+        switchPostInit(view);
+        fabInit(view);
 
         postFeed = view.findViewById(R.id.post_feed_recyclerView);
         feedAdapter = new PostsFeedAdapter((item, post) -> ((SelectionListener) getActivity()).clickListener(item, post, post.getUploaderEmail().equals(postsFeedViewModel.getCurrUserEmail())));
-        // TODO: INITIATE THE REFRESH FUNCTION
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(() ->
         {
@@ -164,26 +139,51 @@ public class FeedFragment extends Fragment {
                     feedAdapter.setData(posts);
                 });
 
+        initSearchBar(view);
+    }
+
+    private void initSearchBar(@NonNull View view) {
         searchbar = view.findViewById(R.id.search_bar);
+        searchbar.addTextChangedListener(new TextWatcher() {
 
-        searchbar.addTextChangedListener(new
+            public void afterTextChanged(Editable s) {
+            }
 
-                                                 TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
 
-                                                     public void afterTextChanged(Editable s) {
-                                                     }
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                postsFeedViewModel.getFilteredPosts(s.toString()).observe(getViewLifecycleOwner(), posts -> {
+                    feedAdapter.setData(posts);
+                });
+            }
+        });
+    }
 
-                                                     public void beforeTextChanged(CharSequence s, int start,
-                                                                                   int count, int after) {
-                                                     }
+    private void fabInit(@NonNull View view) {
+        newPostFAB = view.findViewById(R.id.newPostFAB);
+        newPostFAB.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(FeedFragmentDirections.actionFeedFragmentToAddPostFragment(""));
+        });
+    }
 
-                                                     public void onTextChanged(CharSequence s, int start,
-                                                                               int before, int count) {
-                                                         postsFeedViewModel.getFilteredPosts(s.toString()).observe(getViewLifecycleOwner(), posts -> {
-                                                             feedAdapter.setData(posts);
-                                                         });
-                                                     }
-                                                 });
+    private void switchPostInit(@NonNull View view) {
+        switchViewMyPosts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                TextView toggleTV = view.findViewById(R.id.toggle_text);
+                if (isChecked)
+                    toggleTV.setText(R.string.toggle_text_all);
+                else
+                    toggleTV.setText(R.string.toggle_text_only_user);
+                postsFeedViewModel.setViewCurrentUserPosts(isChecked);
+                searchbar.setText("");
+                postsFeedViewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
+                    feedAdapter.setData(posts);
+                });
+            }
+        });
     }
 
     @Override

@@ -64,4 +64,6 @@
     <string name="need_help">Need help?</string>
     <string name="click_here">Click Here!</string>
     <string name="addpost">Add Post</string>
+    <string name="shaking_message">Shaking to a new post!</string>
+    <string name="edit_post_title">Edit Post</string>
 </resources>

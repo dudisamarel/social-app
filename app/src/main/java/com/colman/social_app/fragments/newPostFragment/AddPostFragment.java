@@ -35,11 +35,6 @@ import java.util.UUID;
 
 public class AddPostFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String POST_ID = "";
-
-    // TODO: Rename and change types of parameters
     private String postID = "";
 
     private NewPostViewModel newPostViewModel;
@@ -56,8 +51,6 @@ public class AddPostFragment extends Fragment {
     public AddPostFragment() {
         // Required empty public constructor
     }
-
-    // TODO: Rename and change types and number of parameters
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,14 +71,8 @@ public class AddPostFragment extends Fragment {
 
         this.postID = AddPostFragmentArgs.fromBundle(getArguments()).getPostID();
 
-        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
-        newPostViewModel = new ViewModelProvider(this, viewModelFactory).get(NewPostViewModel.class);
-        addPostTitle = view.findViewById(R.id.addPostTitle);
-        saveButton = view.findViewById(R.id.save_button);
-        deleteButton = view.findViewById(R.id.delete_button);
-        postTitle = view.findViewById(R.id.postTitle);
-        postContent = view.findViewById(R.id.postContent);
-        attachmentIV = view.findViewById(R.id.attachmentIV);
+        initViewModel();
+        initScreenComponents(view);
 
         view.findViewById(R.id.addAAttachmentButton).setOnClickListener(v -> {
             ImageUtils.selectImageOrVideo(this.getContext());
@@ -97,6 +84,7 @@ public class AddPostFragment extends Fragment {
             addPostTitle.setText(R.string.addpost);
             saveButton.setOnClickListener(this::upload);
         } else {
+            addPostTitle.setText(R.string.edit_post_title);
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());
@@ -155,6 +143,20 @@ public class AddPostFragment extends Fragment {
                 });
             });
         }
+    }
+
+    private void initScreenComponents(@NonNull View view) {
+        addPostTitle = view.findViewById(R.id.addPostTitle);
+        saveButton = view.findViewById(R.id.save_button);
+        deleteButton = view.findViewById(R.id.delete_button);
+        postTitle = view.findViewById(R.id.postTitle);
+        postContent = view.findViewById(R.id.postContent);
+        attachmentIV = view.findViewById(R.id.attachmentIV);
+    }
+
+    private void initViewModel() {
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        newPostViewModel = new ViewModelProvider(this, viewModelFactory).get(NewPostViewModel.class);
     }
 
     private boolean validTitle() {
@@ -222,6 +224,4 @@ public class AddPostFragment extends Fragment {
             Glide.with(this.getContext()).load(attachmentUriToPost).into(attachmentIV);
         }
     }
-
-
 }

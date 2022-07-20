@@ -55,10 +55,19 @@ public class PostDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initScreenComponents(view);
+        setPost();
+    }
+
+
+    private void initScreenComponents(@NonNull View view) {
         attachmentVV = view.findViewById(R.id.attachmentVV);
         attachmentIV = view.findViewById(R.id.attachmentIV);
         postTitle = view.findViewById(R.id.postDetailTitle);
         postContent = view.findViewById(R.id.postDetailContent);
+    }
+
+    private void setPost() {
         if (getArguments() != null) {
             setPostData(AddPostFragmentArgs.fromBundle(getArguments()).getPostID());
         }
@@ -81,7 +90,6 @@ public class PostDetailsFragment extends Fragment {
             }
         }
     }
-
 
     public void setPostData(String postId) {
         attachmentVV.setVisibility(View.GONE);
@@ -121,5 +129,4 @@ public class PostDetailsFragment extends Fragment {
             attachmentVV.start();
         });
     }
-
 }

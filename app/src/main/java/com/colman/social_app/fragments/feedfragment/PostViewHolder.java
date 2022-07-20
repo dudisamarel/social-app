@@ -36,7 +36,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnClickListener(v -> {
             clickListener.onclick(v, currPost);
-            //Log.i("ITEM_CLICK", title.getText().toString() + "was clicked");
         });
     }
 
