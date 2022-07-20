@@ -64,4 +64,5 @@
     <string name="need_help">Need help?</string>
     <string name="click_here">Click Here!</string>
     <string name="addpost">Add Post</string>
+    <string name="editpost">Edit post</string>
 </resources>

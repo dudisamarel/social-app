@@ -9,21 +9,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:weightSum="5"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_preview"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:name="com.colman.social_app.fragments.postDetailFragment.PostDetailsFragment"
-            tools:layout="@layout/fragment_post_details"
-            android:layout_weight="3" />
+            android:id="@+id/details_container"
+            android:layout_weight="3">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_preview"
+                android:name="com.colman.social_app.fragments.postDetailFragment.PostDetailsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_post_details" />
+
+        </LinearLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"

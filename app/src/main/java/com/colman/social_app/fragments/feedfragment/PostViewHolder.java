@@ -34,17 +34,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         postIV = itemView.findViewById(R.id.postIV);
         postTV = itemView.findViewById(R.id.postTV);
 
-        itemView.setOnClickListener(v -> {
-            clickListener.onclick(v, currPost);
-            //Log.i("ITEM_CLICK", title.getText().toString() + "was clicked");
-        });
+        itemView.setOnClickListener(v -> clickListener.onclick(v, currPost);
+        );
     }
 
     public void bind(Post post) {
         currPost = post;
         if (postTV != null)
             postTV.setText(post.getTitle());
-        if (postIV != null && post.getAttachmentURI() != null && !post.getAttachmentURI().isEmpty())
+        if (postIV != null && !post.getAttachmentURI().isEmpty())
             Glide.with(context).load(post.getAttachmentURI()).into(postIV);
     }
 }

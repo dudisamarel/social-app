@@ -98,17 +98,21 @@ public class AddPostFragment extends Fragment {
             saveButton.setOnClickListener(this::upload);
         } else {
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
+                addPostTitle.setText(R.string.editpost);
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());
+                if (!post.getAttachmentURI().isEmpty()) {
+                    Glide.with(getContext()).load(post.getAttachmentURI()).into(attachmentIV);
+                }
                 saveButton.setOnClickListener(v -> {
                     if (!validTitle()) return;
-                    if (attachmentUriToPost != null)
+                    if (attachmentUriToPost != null) {
+                        ProgressDialog dialog = new ProgressDialog(this.getContext());
+                        dialog.setMessage("Loading");
+                        dialog.setCancelable(false);
+                        dialog.setInverseBackgroundForced(false);
+                        dialog.show();
                         newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
-                            ProgressDialog dialog = new ProgressDialog(this.getContext());
-                            dialog.setMessage("Loading");
-                            dialog.setCancelable(false);
-                            dialog.setInverseBackgroundForced(false);
-                            dialog.show();
                             if (task.isSuccessful()) {
                                 Post savedPost = new Post(
                                         postID,
@@ -127,7 +131,7 @@ public class AddPostFragment extends Fragment {
                                 Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    else {
+                    } else {
                         Post savedPost = new Post(
                                 UUID.randomUUID().toString(),
                                 postTitle.getText().toString(),
@@ -168,13 +172,13 @@ public class AddPostFragment extends Fragment {
 
     private void upload(View v) {
         if (!validTitle()) return;
-        if (attachmentUriToPost != null)
+        if (attachmentUriToPost != null) {
+            ProgressDialog dialog = new ProgressDialog(this.getContext());
+            dialog.setMessage("Loading");
+            dialog.setCancelable(false);
+            dialog.setInverseBackgroundForced(false);
+            dialog.show();
             newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
-                ProgressDialog dialog = new ProgressDialog(this.getContext());
-                dialog.setMessage("Loading");
-                dialog.setCancelable(false);
-                dialog.setInverseBackgroundForced(false);
-                dialog.show();
                 if (task.isSuccessful()) {
                     Post savedPost = new Post(
                             UUID.randomUUID().toString(),
@@ -186,14 +190,14 @@ public class AddPostFragment extends Fragment {
                     newPostViewModel.savePost(savedPost);
                     dialog.dismiss();
                     backToFeed(v);
-                    Toast.makeText(this.getContext(), "Attachment uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.getContext(), "Post  uploaded", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.dismiss();
                     backToFeed(v);
                     Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
                 }
             });
-        else {
+        } else {
             Post savedPost = new Post(
                     UUID.randomUUID().toString(),
                     postTitle.getText().toString(),
