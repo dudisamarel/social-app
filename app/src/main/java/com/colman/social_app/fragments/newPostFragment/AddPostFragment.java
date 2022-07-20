@@ -6,10 +6,8 @@ import static com.colman.social_app.constants.Constants.PICK_MEDIA_REQUEST_CODE;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +15,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,55 +93,53 @@ public class AddPostFragment extends Fragment {
 
         // new post - no getting post details is needed
         if (postID.equals("")) {
-            addPostTitle.setText(R.string.addpost);
             deleteButton.setVisibility(View.GONE);
+            addPostTitle.setText(R.string.addpost);
             saveButton.setOnClickListener(this::upload);
         } else {
-
-            addPostTitle.setText("Edit Post");
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
                 postTitle.setText(post.getTitle());
                 postContent.setText(post.getContent());
-                if (attachmentIV != null && post.getAttachmentURI() != null) {
-                    attachmentUriToPost = Uri.parse(post.getAttachmentURI());
-                    Glide.with(this).load(attachmentUriToPost).into(attachmentIV);
-                }
                 saveButton.setOnClickListener(v -> {
-                    if (postTitle.getText().toString().isEmpty()) {
-                        postTitle.setError("Title is required");
-                        return;
+                    if (!validTitle()) return;
+                    if (attachmentUriToPost != null)
+                        newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
+                            ProgressDialog dialog = new ProgressDialog(this.getContext());
+                            dialog.setMessage("Loading");
+                            dialog.setCancelable(false);
+                            dialog.setInverseBackgroundForced(false);
+                            dialog.show();
+                            if (task.isSuccessful()) {
+                                Post savedPost = new Post(
+                                        postID,
+                                        postTitle.getText().toString(),
+                                        postContent.getText().toString(),
+                                        task.getResult().toString(),
+                                        newPostViewModel.getCurrUserEmail(),
+                                        post.getCreated()
+                                );
+                                dialog.dismiss();
+                                newPostViewModel.savePost(savedPost);
+                                backToFeed(v);
+                            } else {
+                                dialog.dismiss();
+                                backToFeed(v);
+                                Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    else {
+                        Post savedPost = new Post(
+                                UUID.randomUUID().toString(),
+                                postTitle.getText().toString(),
+                                postContent.getText().toString(),
+                                "",
+                                newPostViewModel.getCurrUserEmail(),
+                                post.getCreated()
+                        );
+                        backToFeed(v);
+                        newPostViewModel.savePost(savedPost);
                     }
-                    ProgressDialog dialog = new ProgressDialog(this.getContext());
-                    dialog.setMessage("Loading");
-                    dialog.setCancelable(false);
-                    dialog.setInverseBackgroundForced(false);
-                    dialog.show();
-                    newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
-                        if (task.isSuccessful()) {
-                            Post savedPost = new Post(
-                                    postID,
-                                    postTitle.getText().toString(),
-                                    postContent.getText().toString(),
-                                    task.getResult().toString(),
-                                    newPostViewModel.getCurrUserEmail(),
-                                    post.getCreated()
-                            );
-                            newPostViewModel.savePost(savedPost);
-                            dialog.dismiss();
-                            Navigation.findNavController(v)
-                                    .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
-                            Toast.makeText(this.getContext(), "Attachment uploaded", Toast.LENGTH_SHORT).show();
-                        } else {
-                            dialog.dismiss();
-                            Navigation.findNavController(v)
-                                    .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
-                            Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    Navigation.findNavController(v)
-                            .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
                 });
-                deleteButton.setText(R.string.delete);
                 deleteButton.setOnClickListener(v -> {
                     Post deletedPost = new Post(
                             postID,
@@ -155,22 +149,25 @@ public class AddPostFragment extends Fragment {
                             newPostViewModel.getCurrUserEmail(),
                             post.getCreated()
                     );
-
                     deletedPost.setDeleted(true);
                     newPostViewModel.deletePost(deletedPost);
-                    Navigation.findNavController(v)
-                            .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
+                    backToFeed(v);
                 });
             });
         }
+    }
 
+    private boolean validTitle() {
+        if (postTitle.getText().toString().isEmpty()) {
+            postTitle.setError("Title is required");
+            postTitle.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     private void upload(View v) {
-        if (postTitle.getText().toString().isEmpty()) {
-            postTitle.setError("Title is required");
-            return;
-        }
+        if (!validTitle()) return;
         if (attachmentUriToPost != null)
             newPostViewModel.uploadAttachment(mediaName, attachmentUriToPost, task -> {
                 ProgressDialog dialog = new ProgressDialog(this.getContext());
@@ -188,13 +185,11 @@ public class AddPostFragment extends Fragment {
                     );
                     newPostViewModel.savePost(savedPost);
                     dialog.dismiss();
-                    Navigation.findNavController(v)
-                            .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
+                    backToFeed(v);
                     Toast.makeText(this.getContext(), "Attachment uploaded", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.dismiss();
-                    Navigation.findNavController(v)
-                            .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
+                    backToFeed(v);
                     Toast.makeText(this.getContext(), "Failed to upload attachment", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -206,8 +201,7 @@ public class AddPostFragment extends Fragment {
                     "",
                     newPostViewModel.getCurrUserEmail()
             );
-            Navigation.findNavController(v)
-                    .navigate(AddPostFragmentDirections.actionGlobalFeedFragment());
+            backToFeed(v);
             newPostViewModel.savePost(savedPost);
         }
     }

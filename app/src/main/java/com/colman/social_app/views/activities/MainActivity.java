@@ -93,10 +93,14 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.Sele
                 );
             }
         } else {
-            detailsFragment.setPostData(post);
+            if (showDetails) {
+                Navigation.findNavController(itemView).navigate(
+                        FeedFragmentDirections.actionFeedFragmentToAddPostFragment(post.getId())
+                );
+            } else {
+                detailsFragment.setPostData(post);
+            }
         }
         Log.i("POST_CLICK", post.getTitle());
     }
-
-
 }
