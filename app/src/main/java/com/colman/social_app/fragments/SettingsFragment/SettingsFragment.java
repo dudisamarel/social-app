@@ -39,17 +39,21 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
-        settingsFragmentViewModel = new ViewModelProvider(this, viewModelFactory).get(SettingsFragmentViewModel.class);
+        initViewModel();
 
+        initShakingSwitch(view);
+    }
+
+    private void initShakingSwitch(@NonNull View view) {
         enableShakingSwitch = view.findViewById(R.id.enableShakingSwitch);
 
         enableShakingSwitch.setChecked(settingsFragmentViewModel.getEnableShaking());
 
-        enableShakingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settingsFragmentViewModel.setEnableShaking(isChecked);
-            }
-        });
+        enableShakingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> settingsFragmentViewModel.setEnableShaking(isChecked));
+    }
+
+    private void initViewModel() {
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        settingsFragmentViewModel = new ViewModelProvider(this, viewModelFactory).get(SettingsFragmentViewModel.class);
     }
 }

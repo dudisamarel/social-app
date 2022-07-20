@@ -18,7 +18,7 @@
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font/font.xml" value="0.4390625" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font/fonts.xml" value="0.434375" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/font/poppins_medium.xml" value="0.434375" />
-        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout-w800dp/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout-w800dp/activity_main.xml" value="0.28722677595628415" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout-w800dp/fragment_feed.xml" value="0.2510245901639344" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout-w800dp/post_list_item.xml" value="0.2510245901639344" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/layout/activity_intro.xml" value="0.3328804347826087" />
@@ -42,6 +42,13 @@
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_profile.xml" value="0.2" />
         <entry key="..\:/Users/dudi samarel/AndroidStudioProjects/socialapp/app/src/main/res/mipmap-anydpi-v26/ic_profile_round.xml" value="0.2" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout-w800dp/activity_main.xml" value="0.1" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout-w800dp/fragment_feed.xml" value="0.136" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout-w800dp/post_list_item.xml" value="0.1" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/fragment_feed.xml" value="0.1" />
+        <entry key="..\:/Yoav/Projects/social-app/social-app/app/src/main/res/layout/post_list_item.xml" value="0.20625" />
       </map>
     </option>
   </component>
