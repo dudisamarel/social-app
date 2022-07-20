@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.Sele
     NavController navController;
     MainActivityViewModel viewModel;
     PostDetailsFragment detailsFragment;
+    LinearLayout detailsContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.Sele
             startActivity(intent);
         }
         setContentView(R.layout.activity_main);
+        detailsContainer = findViewById(R.id.details_container);
         detailsFragment = (PostDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_preview);
         initNavigation();
         initNavBar();
@@ -63,13 +68,22 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.Sele
 
 
     protected void initNavBar() {
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.profile:
+                    if (detailsContainer != null) {
+                        param.weight = 0;
+                        detailsContainer.setLayoutParams(param);
+                    }
                     navController.navigate(R.id.action_global_userProfile);
                     return true;
                 case R.id.home:
+                    if (detailsContainer != null) {
+                        param.weight = 2;
+                        detailsContainer.setLayoutParams(param);
+                    }
                     navController.navigate(R.id.action_global_feedFragment);
                     return true;
             }
@@ -78,6 +92,11 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.Sele
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 
     @Override
     public void clickListener(View itemView, Post post, boolean showDetails) {
@@ -101,6 +120,5 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.Sele
                 detailsFragment.setPostData(post);
             }
         }
-        Log.i("POST_CLICK", post.getTitle());
     }
 }

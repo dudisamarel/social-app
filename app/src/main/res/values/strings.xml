@@ -65,5 +65,5 @@
     <string name="click_here">Click Here!</string>
     <string name="addpost">Add Post</string>
     <string name="shaking_message">Shaking to a new post!</string>
-    <string name="edit_post_title">Edit Post</string>
+    <string name="editpost">Edit post</string>
 </resources>
