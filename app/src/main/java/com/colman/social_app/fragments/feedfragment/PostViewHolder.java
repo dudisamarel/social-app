@@ -34,8 +34,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         postIV = itemView.findViewById(R.id.postIV);
         postTV = itemView.findViewById(R.id.postTV);
 
-        itemView.setOnClickListener(v -> clickListener.onclick(v, currPost);
-        );
+        itemView.setOnClickListener(v -> clickListener.onclick(v, currPost));
     }
 
     public void bind(Post post) {

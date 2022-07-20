@@ -25,6 +25,7 @@
             android:fontFamily="@font/poppins"
             android:textColor="@color/black"
             android:textSize="30sp"
+            android:gravity="center"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/title" />
