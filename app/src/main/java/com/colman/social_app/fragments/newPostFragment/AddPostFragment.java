@@ -74,17 +74,22 @@ public class AddPostFragment extends Fragment {
         initViewModel();
         initScreenComponents(view);
 
+        initAttachmentButton(view);
+
+        initLayout();
+    }
+
+    private void initAttachmentButton(@NonNull View view) {
         view.findViewById(R.id.addAAttachmentButton).setOnClickListener(v -> {
             ImageUtils.selectImageOrVideo(this.getContext());
         });
+    }
 
+    private void initLayout() {
         // new post - no getting post details is needed
         if (postID.equals("")) {
-            deleteButton.setVisibility(View.GONE);
-            addPostTitle.setText(R.string.addpost);
-            saveButton.setOnClickListener(this::upload);
+            initScrennComponents();
         } else {
-            addPostTitle.setText(R.string.edit_post_title);
             newPostViewModel.getPostByID(postID).observe(getViewLifecycleOwner(), post -> {
                 addPostTitle.setText(R.string.editpost);
                 postTitle.setText(post.getTitle());
@@ -147,6 +152,12 @@ public class AddPostFragment extends Fragment {
                 });
             });
         }
+    }
+
+    private void initScrennComponents() {
+        deleteButton.setVisibility(View.GONE);
+        addPostTitle.setText(R.string.addpost);
+        saveButton.setOnClickListener(this::upload);
     }
 
     private void initScreenComponents(@NonNull View view) {

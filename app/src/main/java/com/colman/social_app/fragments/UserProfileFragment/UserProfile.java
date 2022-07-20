@@ -50,10 +50,27 @@ public class UserProfile extends Fragment {
     ImageButton settingButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewModelFactory factory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
-        viewModel = new ViewModelProvider(this, factory).get(UserProfileViewModel.class);
+        initViewModel();
         user = viewModel.getUser();
         View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        setUserProfile(v);
+        setClickListeners(v);
+        return v;
+    }
+
+    private void setClickListeners(View v) {
+        v.findViewById(R.id.editNameIB).setOnClickListener(this::onClickEditName);
+        v.findViewById(R.id.editPasswordIB).setOnClickListener(this::onClickEditPassword);
+        profileIV.setOnClickListener(this::onClickEditImage);
+        v.findViewById(R.id.logoutBtn).setOnClickListener(view -> {
+            viewModel.signOut();
+            Intent intent = new Intent(v.getContext(), Login.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+    }
+
+    private void setUserProfile(View v) {
         if (user != null) {
             profileIV = v.findViewById(R.id.profileIV);
             emailTV = v.findViewById(R.id.emailTV);
@@ -66,16 +83,11 @@ public class UserProfile extends Fragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-        v.findViewById(R.id.editNameIB).setOnClickListener(this::onClickEditName);
-        v.findViewById(R.id.editPasswordIB).setOnClickListener(this::onClickEditPassword);
-        profileIV.setOnClickListener(this::onClickEditImage);
-        v.findViewById(R.id.logoutBtn).setOnClickListener(view -> {
-            viewModel.signOut();
-            Intent intent = new Intent(v.getContext(), Login.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
-        return v;
+    }
+
+    private void initViewModel() {
+        ViewModelFactory factory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        viewModel = new ViewModelProvider(this, factory).get(UserProfileViewModel.class);
     }
 
     @Override

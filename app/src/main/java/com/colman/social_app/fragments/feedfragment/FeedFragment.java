@@ -54,7 +54,7 @@ public class FeedFragment extends Fragment {
     private float acceleration;
     private float accelerationCurrent;
     private float accelerationLast;
-    private final float MINIMAL_ACCELERATION = 12;
+    private final float MINIMAL_ACCELERATION = 10.5f;
 
     final SensorEventListener sensorListener = new SensorEventListener() {
 
