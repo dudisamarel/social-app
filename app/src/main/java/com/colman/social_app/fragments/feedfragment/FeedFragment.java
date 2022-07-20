@@ -90,32 +90,18 @@ public class FeedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
-        postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
+        initViewModel();
 //        View fragment_preview = view.findViewById(R.id.fragment_preview);
-        sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
-        acceleration = 10f;
-        accelerationCurrent = SensorManager.GRAVITY_EARTH;
-        accelerationLast = SensorManager.GRAVITY_EARTH;
+        initSensor(view);
 
-        if (postsFeedViewModel.getEnableShaking()) {
-            Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                    SensorManager.SENSOR_DELAY_NORMAL);
-        }
-
-        switchViewMyPosts = view.findViewById(R.id.switchMyPosts);
-        switchViewMyPosts.setChecked(postsFeedViewModel.getViewCurrUserPosts());
-        if (postsFeedViewModel.getCurrUserEmail().equals("")) {
-            switchViewMyPosts.setVisibility(View.GONE);
-        }
+        switchCurrUserPostInit(view);
         switchPostInit(view);
         fabInit(view);
 
         postFeed = view.findViewById(R.id.post_feed_recyclerView);
         feedAdapter = new PostsFeedAdapter((item, post) -> ((SelectionListener) getActivity()).clickListener(item, post, post.getUploaderEmail().equals(postsFeedViewModel.getCurrUserEmail())));
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(() ->
-        {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(false);
             postsFeedViewModel.refreshFromRemote();
         });
@@ -123,12 +109,11 @@ public class FeedFragment extends Fragment {
         if (isTablet) {
             postFeed.setLayoutManager(new
                     GridLayoutManager(this.getContext(), 1));
-        }else{
+        } else {
             postFeed.setLayoutManager(new
                     GridLayoutManager(this.getContext(), 2));
         }
         postFeed.setAdapter(feedAdapter);
-
 
 
         postsFeedViewModel.getAllPosts().
@@ -140,6 +125,31 @@ public class FeedFragment extends Fragment {
                 });
 
         initSearchBar(view);
+    }
+
+    private void switchCurrUserPostInit(@NonNull View view) {
+        switchViewMyPosts = view.findViewById(R.id.switchMyPosts);
+        switchViewMyPosts.setChecked(postsFeedViewModel.getViewCurrUserPosts());
+        if (postsFeedViewModel.getCurrUserEmail().equals("")) {
+            switchViewMyPosts.setVisibility(View.GONE);
+        }
+    }
+
+    private void initSensor(@NonNull View view) {
+        sensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
+        acceleration = 10f;
+        accelerationCurrent = SensorManager.GRAVITY_EARTH;
+        accelerationLast = SensorManager.GRAVITY_EARTH;
+
+        if (postsFeedViewModel.getEnableShaking()) {
+            Objects.requireNonNull(sensorManager).registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    private void initViewModel() {
+        ViewModelFactory viewModelFactory = ((SocialApplication) getActivity().getApplication()).getViewModelFactory();
+        postsFeedViewModel = new ViewModelProvider(this, viewModelFactory).get(PostsFeedViewModel.class);
     }
 
     private void initSearchBar(@NonNull View view) {
